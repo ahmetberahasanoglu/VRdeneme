@@ -1,0 +1,11 @@
+Model Information:
+* title:	Atatürk Büstü
+* source:	https://sketchfab.com/3d-models/ataturk-bustu-c065f9e7d834429693f69a3d46471af5
+* author:	tansusayiner (https://sketchfab.com/tansusayiner)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Atatürk Büstü" (https://sketchfab.com/3d-models/ataturk-bustu-c065f9e7d834429693f69a3d46471af5) by tansusayiner (https://sketchfab.com/tansusayiner) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
