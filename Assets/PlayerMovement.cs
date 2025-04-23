@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -6,8 +7,9 @@ public class PlayerMovement : MonoBehaviour
 
     public float speed = 12f;
     public float gravity = -9.81f;
+    public TextMeshProUGUI instructionText;
 
-    Vector3 velocity;
+   Vector3 velocity;
 
     public Transform groundCheck;
     public float distance=0.4f;
@@ -28,6 +30,14 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(move*speed*Time.deltaTime);
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "giris")
+        {
+            //instructionText.IsActive(true);
+            //Üste yazý gelecek: Bir reçete al ve gözlüðü yapmaya baþla!.
+        }
     }
 }
    

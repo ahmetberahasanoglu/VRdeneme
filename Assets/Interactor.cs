@@ -1,8 +1,6 @@
 using TMPro;
 using UnityEngine;
 
-
-
 public class Interactor : MonoBehaviour
 {
     public Camera mainCamera;
@@ -11,38 +9,39 @@ public class Interactor : MonoBehaviour
     public GameObject interactionUI;
     public TextMeshProUGUI interactionText;
 
-
+    private bool wasHitSomething = false;
 
     void Update()
     {
         InteractionRay();
     }
-    private bool wasHitSomething = false;
 
     void InteractionRay()
     {
-        Ray ray = mainCamera.ViewportPointToRay(Vector3.one / 2);
+        Ray ray = mainCamera.ViewportPointToRay(Vector3.one / 2); // ekranýn ortasý
         RaycastHit hit;
 
-        bool hitsomethin = false;
+        bool hitsomething = false;
         if (Physics.Raycast(ray, out hit, interactionDistance))
         {
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
             if (interactable != null)
             {
-                hitsomethin = true;
+                hitsomething = true;
                 interactionText.text = interactable.GetDescription();
-                if (Input.GetKeyDown(KeyCode.E))
+
+                // Deðiþiklik: Mouse sol týk kontrolü
+                if (Input.GetMouseButtonDown(0)) // 0 = Left Click
                 {
                     interactable.Interact();
                 }
             }
         }
 
-        if (hitsomethin != wasHitSomething)
+        if (hitsomething != wasHitSomething)
         {
-            interactionUI.SetActive(hitsomethin);
-            wasHitSomething = hitsomethin;
+            interactionUI.SetActive(hitsomething);
+            wasHitSomething = hitsomething;
         }
     }
 }
