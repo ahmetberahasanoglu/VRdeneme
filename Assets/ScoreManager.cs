@@ -4,26 +4,32 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance;
 
-    public int finalScore { get; private set; } = 0;
-
-    private void Awake()
+    void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    public int CalculateScore(PrescriptionData prescription, PlayerSelections playerSelection)
+    public int CalculateScore(Prescription prescription, PlayerSelections selection)
     {
         int score = 0;
 
-        if (prescription.lensType == playerSelection.lensType) score++;
-        if (prescription.frameType == playerSelection.frameType) score++;
-        if (prescription.coatingType == playerSelection.coatingType) score++;
-        if (prescription.nosePadType == playerSelection.nosePadType) score++;
-        if (prescription.screwType == playerSelection.screwType) score++;
+        if (Mathf.Approximately(prescription.sphere, selection.sphere)) score++;
+        if (Mathf.Approximately(prescription.cylinder, selection.cylinder)) score++;
+        if (Mathf.Approximately(prescription.axis, selection.axis)) score++;
 
-        finalScore = score;
-        Debug.Log("Final Score: " + finalScore);
+        if (prescription.lensType == selection.lensType) score++;
+        if (prescription.frameType == selection.frameType) score++;
+        if (prescription.coatingType == selection.coatingType) score++;
+        if (prescription.nosePadType == selection.nosePadType) score++;
+        if (prescription.screwType == selection.screwType) score++;
+
         return score;
     }
 }

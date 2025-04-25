@@ -1,47 +1,75 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class Interactor : MonoBehaviour
 {
-    public Camera mainCamera;
-    public float interactionDistance = 2f;
+    public float interactionDistance = 3f;
 
+    Interactable currentInteractable;
     public GameObject interactionUI;
     public TextMeshProUGUI interactionText;
-
+     
     private bool wasHitSomething = false;
 
     void Update()
     {
-        InteractionRay();
+        CheckInteraction();
+        if (Input.GetKeyDown(KeyCode.E) && currentInteractable != null)
+        {
+            currentInteractable.Interact();
+        }
     }
 
-    void InteractionRay()
+    private void CheckInteraction()
     {
-        Ray ray = mainCamera.ViewportPointToRay(Vector3.one / 2); // ekranýn ortasý
         RaycastHit hit;
-
-        bool hitsomething = false;
+        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         if (Physics.Raycast(ray, out hit, interactionDistance))
         {
-            IInteractable interactable = hit.collider.GetComponent<IInteractable>();
-            if (interactable != null)
+            if (hit.collider.tag == "Interactable")
             {
-                hitsomething = true;
-                interactionText.text = interactable.GetDescription();
-
-                // Deðiþiklik: Mouse sol týk kontrolü
-                if (Input.GetMouseButtonDown(0)) // 0 = Left Click
+                Interactable newInteractable = hit.collider.GetComponent<Interactable>();
+                if (currentInteractable && newInteractable != currentInteractable) {
+                    currentInteractable.DisableOutline();
+                }
+                if (newInteractable.enabled)
                 {
-                    interactable.Interact();
+                    SetNewCurrentInteractable(newInteractable);
+                }
+                else
+                {
+                    DisableCurrentInteractable();
                 }
             }
+            else
+            {
+                DisableCurrentInteractable();
+
+            }
+
+        }
+        else
+        {
+            DisableCurrentInteractable();
         }
 
-        if (hitsomething != wasHitSomething)
+
+    }
+
+    private void SetNewCurrentInteractable(Interactable newInteractable)
+    {
+        currentInteractable = newInteractable;
+        currentInteractable.EnableOutline();
+        HUDController.instance.EnableInteractionText(currentInteractable.message); 
+    }
+    void DisableCurrentInteractable()
+    {
+        HUDController.instance.DisableInteractionText();
+        if (currentInteractable)
         {
-            interactionUI.SetActive(hitsomething);
-            wasHitSomething = hitsomething;
+            currentInteractable.DisableOutline();
+            currentInteractable=null;
         }
     }
 }

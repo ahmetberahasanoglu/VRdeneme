@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MachineManager : MonoBehaviour
 {
@@ -38,6 +39,9 @@ public class MachineManager : MonoBehaviour
     public void HighlightCurrentMachine()
     {
         Debug.Log($"Next machine: {machines[currentMachineIndex].machineName}");
+        Outline outline = machines[currentMachineIndex].GetComponent<Outline>();
+            outline.OutlineColor = Color.yellow;
+            outline.OutlineWidth = 5f;
         // Ýstersen burada bir ýþýk, efekt veya UI ile belirt
     }
 

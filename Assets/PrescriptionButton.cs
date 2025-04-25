@@ -14,18 +14,18 @@ public class PrescriptionButton : MonoBehaviour
     {
         prescription = _prescription;
         prescriptionNameText.text = prescription.prescriptionName;
-        prescriptionSphere.text = prescription.sphere.ToString();
-        prescriptionAxis.text = prescription.axis.ToString();
-        prescriptionCylinder.text = prescription.cylinder.ToString();
+        prescriptionSphere.text = prescription.sphere.ToString("F2");
+        prescriptionAxis.text = prescription.axis.ToString("F0");
+        prescriptionCylinder.text = prescription.cylinder.ToString("F2");
     }
 
     public void OnClick()
     {
         GameManager.Instance.StartGame(prescription);
-        Debug.Log("Seçilen reçete: " + myPrescription.prescriptionName);
+        Debug.Log("Seçilen reçete: " + prescription.prescriptionName);
 
         // UI'de bir sonraki adýma geçilebilir, örneðin:
-        UIManager.Instance.HidePrescriptionPanel();
-        UIManager.Instance.ShowStartInstruction();
+        HUDController.instance.HidePrescriptionPanel();
+        HUDController.instance.ShowStartInstruction();
     }
 }

@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a4c398506004ee4c81a594e3c555e85, type: 3}
   m_Name: Prescription1
   m_EditorClassIdentifier: 
-  prescriptionName: 
+  prescriptionName: Gozluk1
   sphere: 0
-  cylinder: 0
+  cylinder: 60
   axis: 0
+  lensType: 
+  frameType: 
+  coatingType: 
+  nosePadType: 
+  screwType: 

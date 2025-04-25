@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class fokometre : MonoBehaviour, IInteractable
+public class fokometre : MonoBehaviour
 {
     public GameObject fokoPanel;
     public string GetDescription()
