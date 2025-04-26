@@ -8,6 +8,7 @@ public class Machine : MonoBehaviour
     public virtual void Interact()
     {
         Debug.Log($"{machineName} interacted.");
+
         CompleteMachine();
     }
 

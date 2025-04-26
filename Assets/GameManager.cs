@@ -4,7 +4,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public Prescription selectedPrescription;
-    public PlayerSelections currentPlayerSelection;
+   // public PlayerSelections currentPlayerSelection;
 
 
     public enum GameState
@@ -48,9 +48,9 @@ public class GameManager : MonoBehaviour
     {
         currentState = GameState.Finished;
 
-        int score = ScoreManager.Instance.CalculateScore(selectedPrescription, currentPlayerSelection);
-        Debug.Log("Oyuncu puaný: " + score + "/5");
+        //int score = ScoreManager.Instance.CalculateScore(selectedPrescription, currentPlayerSelection);
+        //Debug.Log("Oyuncu puaný: " + score + "/5");
 
-        HUDController.instance.ShowResult(score);
+        //HUDController.instance.ShowResult(score);
     }
 }

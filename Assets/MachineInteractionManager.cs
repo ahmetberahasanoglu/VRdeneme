@@ -19,14 +19,19 @@ public class MachineInteractionManager : MonoBehaviour
 
     public void TryInteractWith(Machine machine)
     {
+        if (GameManager.Instance.currentState != GameManager.GameState.InProgress)
+        {
+            ShowError("Önce bir reçete seçmelisiniz!");
+            return;
+        }
         if (machine != MachineManager.Instance.GetCurrentMachine())
         {
             ShowError($"Şu anda {machine.machineName} kullanılamaz.");
             return;
         }
 
-        // Etkileşim başarılı → pozisyona geç
         LockPlayerMovement();
+        Debug.Log("LockMovementCalısmalı");
         MovePlayerToMachine(machine);
         machine.Interact();
     }
@@ -35,7 +40,7 @@ public class MachineInteractionManager : MonoBehaviour
     {
         interactionUI.SetActive(true);
         interactionText.text = msg;
-        Invoke(nameof(HideError), 2f); // 2 saniye sonra kapat
+        Invoke(nameof(HideError), 2f); 
     }
 
     void HideError()
@@ -45,28 +50,26 @@ public class MachineInteractionManager : MonoBehaviour
 
     void MovePlayerToMachine(Machine machine)
     {
-        Transform focusPoint = machine.transform.Find("FocusPoint"); // Makineye önceden boş bir Transform ekle
+        Transform focusPoint = machine.transform.Find("FocusPoint"); 
         if (focusPoint)
         {
-            characterController.enabled = false; // FPS controller için geçici disable
+            characterController.enabled = false;
             player.position = focusPoint.position;
             characterController.enabled = true;
-        }
-        else
-        {
-            Debug.LogWarning("Makine üzerinde 'FocusPoint' yok!");
         }
     }
 
     public void LockPlayerMovement()
     {
         isLocked = true;
-        PlayerMovement.instance.LockControls(); 
+        PlayerMovement.instance.LockControls();
+        Debug.Log("Kontroller kilitlendi");
     }
 
     public void UnlockPlayerMovement()
     {
         isLocked = false;
-        PlayerMovement.instance.UnlockControls(); // örnek fonksiyon
+        PlayerMovement.instance.UnlockControls();
+        Debug.Log("Kontroller acıldı");
     }
 }

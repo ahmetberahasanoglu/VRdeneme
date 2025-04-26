@@ -16,7 +16,7 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    public int CalculateScore(Prescription prescription, PlayerSelections selection)
+   /* public int CalculateScore(Prescription prescription, PlayerSelections selection)
     {
         int score = 0;
 
@@ -31,5 +31,5 @@ public class ScoreManager : MonoBehaviour
         if (prescription.screwType == selection.screwType) score++;
 
         return score;
-    }
+    }*/
 }

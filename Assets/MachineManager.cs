@@ -53,16 +53,14 @@ public class MachineManager : MonoBehaviour
     {
         Debug.Log($"Next machine: {machines[currentMachineIndex].machineName}");
 
-        // Önceki highlight’ý sil
         if (currentHighlight != null)
             Destroy(currentHighlight);
 
-        // Yeni highlight instantiate et
         Transform highlightPoint = machines[currentMachineIndex].transform.Find("HighlightPoint");
         if (highlightPoint != null)
         {
             currentHighlight = Instantiate(highlightPrefab, highlightPoint.position, Quaternion.identity);
-            currentHighlight.transform.SetParent(machines[currentMachineIndex].transform); // Takip etsin
+            currentHighlight.transform.SetParent(machines[currentMachineIndex].transform);
         }
         else
         {
