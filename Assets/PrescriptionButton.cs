@@ -9,6 +9,7 @@ public class PrescriptionButton : MonoBehaviour
     public TextMeshProUGUI prescriptionAxis;
     public TextMeshProUGUI prescriptionCylinder;
     private Prescription prescription;
+   
 
     public void Setup(Prescription _prescription)
     {
@@ -18,13 +19,12 @@ public class PrescriptionButton : MonoBehaviour
         prescriptionAxis.text = prescription.axis.ToString("F0");
         prescriptionCylinder.text = prescription.cylinder.ToString("F2");
     }
-
+    public static event System.Action OnPrescriptionSelected;
     public void OnClick()
     {
         GameManager.Instance.StartGame(prescription);
         Debug.Log("Seçilen reçete: " + prescription.prescriptionName);
-
-        // UI'de bir sonraki adýma geçilebilir, örneðin:
+        OnPrescriptionSelected?.Invoke();
         HUDController.instance.HidePrescriptionPanel();
         HUDController.instance.ShowStartInstruction();
     }

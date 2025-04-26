@@ -24,6 +24,11 @@ public class Interactable :MonoBehaviour
     public void Interact()
     {
           onInteraction.Invoke();
+        Machine machine = GetComponent<Machine>();
+        if (machine != null)
+        {
+            MachineInteractionManager.Instance.TryInteractWith(machine);
+        }
     }
     //string GetDescription();
 }

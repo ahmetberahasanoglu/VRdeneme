@@ -12,6 +12,7 @@ public class labPass : MonoBehaviour
         {
             canvas.SetActive(true);
             instructionText.text = "Bir reçete seç ve gözlüðü yapmaya baþla!";
+            GameObject.Destroy(this);
         }
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
+    public static PlayerMovement instance;  
 
     public float speed = 12f;
     public float gravity = -9.81f;
@@ -15,6 +16,10 @@ public class PlayerMovement : MonoBehaviour
     public float distance=0.4f;
     public LayerMask groundMask;
     bool isGrounded;
+    private void Awake()
+    {
+        instance = this;
+    }
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position,distance,groundMask);
@@ -31,8 +36,16 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
-  
-   
+
+    public void LockControls()
+    {
+        controller.enabled = false;
+    }
+
+    public void UnlockControls()
+    {
+        controller.enabled = true;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
