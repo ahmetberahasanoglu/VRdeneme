@@ -26,6 +26,6 @@ public class PrescriptionButton : MonoBehaviour
         Debug.Log("Seçilen reçete: " + prescription.prescriptionName);
         OnPrescriptionSelected?.Invoke();
         HUDController.instance.HidePrescriptionPanel();
-        HUDController.instance.ShowStartInstruction();
+        //HUDController.instance.ShowStartInstruction();
     }
 }

@@ -8,7 +8,7 @@ public class MachineManager : MonoBehaviour
     public GameObject highlightPrefab; 
     private GameObject currentHighlight;
     public List<Machine> machines = new List<Machine>();
-    private int currentMachineIndex = 0;
+    public int currentMachineIndex = 0;
 
 
     private void Awake()
@@ -48,6 +48,19 @@ public class MachineManager : MonoBehaviour
             GameManager.Instance.FinishGame();
         }
     }
+    public void CompleteCurrentMachine()
+    {
+        currentMachineIndex++;
+        if (currentMachineIndex < machines.Count)
+        {
+          //  StartMachine(machines[currentMachineIndex]);
+        }
+        else
+        {
+            GameManager.Instance.FinishGame();
+        }
+    }
+
 
     public void HighlightCurrentMachine()
     {

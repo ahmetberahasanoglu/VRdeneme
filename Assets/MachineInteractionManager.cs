@@ -10,7 +10,6 @@ public class MachineInteractionManager : MonoBehaviour
     public GameObject interactionUI;
     public TMPro.TextMeshProUGUI interactionText;
 
-    private bool isLocked = false;
 
     private void Awake()
     {
@@ -61,14 +60,12 @@ public class MachineInteractionManager : MonoBehaviour
 
     public void LockPlayerMovement()
     {
-        isLocked = true;
         PlayerMovement.instance.LockControls();
         Debug.Log("Kontroller kilitlendi");
     }
 
     public void UnlockPlayerMovement()
     {
-        isLocked = false;
         PlayerMovement.instance.UnlockControls();
         Debug.Log("Kontroller acıldı");
     }

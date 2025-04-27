@@ -1,45 +1,94 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HUDController : MonoBehaviour
 {
-  public static HUDController instance;
-    
+    public static HUDController instance;
 
-    [Header("Result Panel")]
-    public GameObject resultPanel;
-    public TextMeshProUGUI resultText;
+    [Header("Interaction")]
+    [SerializeField] TMP_Text interactionText;
+
+    [Header("Prescription Panel")]
+    [SerializeField] GameObject prescriptionPanel;
+    [SerializeField] TMP_Text prescriptionText;
+    [SerializeField] GameObject warningMessage;
+    GraphicRaycaster raycaster;
+
+    private bool isTaskCompleted = false;
+
     private void Awake()
     {
         instance = this;
+        raycaster = GetComponent<GraphicRaycaster>();   
     }
-    [SerializeField] TMP_Text interactionText;
-    
+
     public void EnableInteractionText(string text)
     {
-        interactionText.text = text +" (E)";
+        interactionText.text = text + " (E)";
         interactionText.gameObject.SetActive(true);
     }
-    public void DisableInteractionText() {
+
+    public void DisableInteractionText()
+    {
         interactionText.gameObject.SetActive(false);
-
-    }
-    public void ShowResult(int score)
-    {
-        resultText.text = "Puanýnýz: " + score + " / 5";
-        resultPanel.SetActive(true);
     }
 
-    public void HideResult()
+    public void ShowPrescriptionPanel()
     {
-        resultPanel.SetActive(false);
+        isTaskCompleted = false; 
+        prescriptionPanel.SetActive(true);
+        raycaster.enabled = true;
+        LockPlayerControls();
+        Prescription prescription = GameManager.Instance.selectedPrescription;
+        prescriptionText.text = $"Reçete: SPH: {prescription.sphere} CYL: {prescription.cylinder} AXIS: {prescription.axis}";
     }
+
+    public void CompleteCurrentTask()
+    {
+        isTaskCompleted = true;
+        HidePrescriptionPanel();
+        MachineManager.Instance.CompleteCurrentMachine();
+    }
+
+    public void TryHidePrescriptionPanel()
+    {
+        if (isTaskCompleted)
+        {
+            HidePrescriptionPanel();
+        }
+        else
+        {
+            ShowWarningMessage("Ýþlem tamamlanmadan çýkamazsýn!");
+        }
+    }
+
     public void HidePrescriptionPanel()
     {
-        //
+        prescriptionPanel.SetActive(false);
+        raycaster.enabled = false;
+        UnlockPlayerControls();
     }
-    public void ShowStartInstruction()
+
+    private void ShowWarningMessage(string message)
     {
-        //
+        warningMessage.SetActive(true);
+        warningMessage.GetComponentInChildren<TMP_Text>().text = message;
+        // warning message'i belirli saniyelik gösterme yapýlabilr sonra
+    }
+    private void LockPlayerControls()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        PlayerMovement.instance.LockControls();
+        MouseLook.instance.LockMouseLooking();
+    }
+
+    private void UnlockPlayerControls()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        PlayerMovement.instance.UnlockControls();
+        MouseLook.instance.UnlockMouseLooking();
     }
 }

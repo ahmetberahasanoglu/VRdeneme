@@ -1,0 +1,40 @@
+using UnityEngine;
+
+public class Lens : MonoBehaviour
+{
+    public Transform targetPosition; 
+    public float moveSpeed = 3f;
+    private bool isMoving = false;
+
+    private void Update()
+    {
+        if (MachineManager.Instance.currentMachineIndex == 0) {
+            this.gameObject.SetActive(true);
+        }
+       
+        if (isMoving)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition.position, moveSpeed * Time.deltaTime);
+
+            if (Vector3.Distance(transform.position, targetPosition.position) < 0.01f)
+            {
+                isMoving = false;
+                OnLensReachedTarget();
+            }
+        }
+    }
+
+    public void StartMoving()
+    {
+        if (MachineManager.Instance.currentMachineIndex==0) {
+            isMoving = true;
+        }
+       
+    }
+
+    private void OnLensReachedTarget()
+    {
+        Debug.Log("Hedefe ulastý");
+       HUDController.instance.ShowPrescriptionPanel();
+    }
+}

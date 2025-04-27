@@ -8,8 +8,8 @@ public class Machine : MonoBehaviour
     public virtual void Interact()
     {
         Debug.Log($"{machineName} interacted.");
-
-        CompleteMachine();
+       // CompleteMachine();
+        //MachineInteractionManager.Instance.UnlockPlayerMovement();
     }
 
     public void CompleteMachine()

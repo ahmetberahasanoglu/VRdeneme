@@ -2,22 +2,57 @@ using UnityEngine;
 
 public class MouseLook : MonoBehaviour
 {
-    public float sensivity = 100f;
+    public static MouseLook instance;
+    public float sensitivity = 100f;
     public Transform playerBody;
-    float xRotation = 0f;
-    void Start()
+
+    private float xRotation = 0f;
+    private bool isMouseLookLocked = false;
+    private void Awake()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        instance = this;
     }
 
-    // Update is called once per frame
+    void Start()
+    {
+        LockCursor(); 
+    }
+
     void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X")*sensivity*Time.deltaTime;   
-        float mouseY = Input.GetAxis("Mouse Y") * sensivity * Time.deltaTime;
+        if (isMouseLookLocked) return; 
+
+        float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
+
         xRotation -= mouseY;
-        xRotation=Mathf.Clamp(xRotation, -90f, 90f);
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
         playerBody.Rotate(Vector3.up * mouseX);
-       transform.localRotation=Quaternion.Euler(xRotation,0f,0f);
+        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+    }
+
+    public void LockMouseLooking()
+    {
+        isMouseLookLocked = true;
+        UnlockCursor(); 
+    }
+
+    public void UnlockMouseLooking()
+    {
+        isMouseLookLocked = false;
+        LockCursor(); 
+    }
+
+    void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }
