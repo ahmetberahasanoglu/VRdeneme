@@ -5,12 +5,12 @@ public class Lens : MonoBehaviour
     public Transform targetPosition; 
     public float moveSpeed = 3f;
     private bool isMoving = false;
+  
 
+  
     private void Update()
     {
-        if (MachineManager.Instance.currentMachineIndex == 0) {
-            this.gameObject.SetActive(true);
-        }
+       
        
         if (isMoving)
         {
@@ -35,6 +35,14 @@ public class Lens : MonoBehaviour
     private void OnLensReachedTarget()
     {
         Debug.Log("Hedefe ulastý");
-       HUDController.instance.ShowPrescriptionPanel();
+       HUDController.instance.ShowfokoPanel();
+        /* if (this.gameObject.name == "lens")
+        {
+            HUDController.instance.ShowfokoPanel();
+        }else if(this.gameObject.name == "glasses")
+        {
+            HUDController.instance.ShowGlassPanel();
+        }*/
     }
+
 }

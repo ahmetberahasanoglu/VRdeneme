@@ -6,7 +6,7 @@ public class Prescription : ScriptableObject
     public string prescriptionName;
     public float sphere;
     public float cylinder;
-    public float axis;
+    public int axis;
     public string lensType;
     public string frameType;
     public string coatingType;

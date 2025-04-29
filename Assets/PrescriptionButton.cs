@@ -25,7 +25,7 @@ public class PrescriptionButton : MonoBehaviour
         GameManager.Instance.StartGame(prescription);
         Debug.Log("Seçilen reçete: " + prescription.prescriptionName);
         OnPrescriptionSelected?.Invoke();
-        HUDController.instance.HidePrescriptionPanel();
+        HUDController.instance.HidefokoPanel();
         //HUDController.instance.ShowStartInstruction();
     }
 }
