@@ -4,15 +4,18 @@ using UnityEngine.UI;
 
 public class fokometre : MonoBehaviour
 {
+    public static fokometre Instance;
     [Header("UI References")]
     public TMP_Text sphereText;
     public TMP_Text cylinderText;
     public TMP_Text axisText;
     public TMP_Text markingStatusText;
+    public RectTransform crosshair;
+    public RectTransform targetCenter;
 
     [Header("Target Prescription Values")]
-    private float targetSphere;
-    private float targetCylinder;
+    [SerializeField] private float targetSphere;
+    [SerializeField] private float targetCylinder;
     private int targetAxis;
 
     private float currentSphere = 0f;
@@ -22,69 +25,102 @@ public class fokometre : MonoBehaviour
     private bool sphereSet = false;
     private bool cylinderSet = false;
     private bool markingOK = false;
+    private bool isCrosshairCentered = false;
+
+    private bool isDragging = false;
+    private float axisInputDelay = 0.1f; 
+    private float axisInputTimer = 0f;
 
     private Prescription prescription;
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         if (GameManager.Instance.selectedPrescription != null)
             prescription = GameManager.Instance.selectedPrescription;
         else
             Debug.LogError("Prescription null!");
+
+        RandomizeCrosshairPosition();
     }
-
-
-
 
     private void Update()
     {
         if (this.gameObject.activeInHierarchy)
         {
+            axisInputTimer += Time.deltaTime;
             HandleAxisInput();
+            HandleCrosshairDrag();
             CheckMarkingStatus();
+            UpdateAxisText();
         }
     }
 
     private void HandleAxisInput()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if ((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)) && axisInputTimer >= axisInputDelay)
         {
-            currentAxis--;
-            if (currentAxis < 0) currentAxis = 180;
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                currentAxis--;
+                if (currentAxis < 0) currentAxis = 180;
+            }
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+                currentAxis++;
+                if (currentAxis > 180) currentAxis = 0;
+            }
+
             UpdateAxisText();
+            axisInputTimer = 0f; 
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+    }
+
+    private void HandleCrosshairDrag()
+    {
+        if (Input.GetMouseButtonDown(0))
         {
-            currentAxis++;
-            if (currentAxis > 180) currentAxis = 0;
-            UpdateAxisText();
+            Vector2 mousePos;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                crosshair.parent as RectTransform,
+                Input.mousePosition,
+                null,
+                out mousePos);
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(crosshair, Input.mousePosition))
+            {
+                isDragging = true;
+            }
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            isDragging = false;
+        }
+
+        if (isDragging)
+        {
+            Vector2 localMousePos;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                crosshair.parent as RectTransform,
+                Input.mousePosition,
+                null,
+                out localMousePos);
+
+            crosshair.anchoredPosition = localMousePos;
         }
     }
-
-    public void ConfirmSphereCylinder()
+    public bool IsAllConditionsMet()
     {
-        currentSphere = targetSphere;
-        currentCylinder = targetCylinder;
-
-        sphereSet = true;
-        cylinderSet = true;
+        return sphereSet && cylinderSet && markingOK && isCrosshairCentered;
     }
-
-    private void UpdateSphereCylinderText()
-    {
-        sphereText.text =  currentSphere.ToString("F2");
-        cylinderText.text = currentCylinder.ToString("F2");
-    }
-
-    private void UpdateAxisText()
-    {
-        axisText.text = "Axis: " + currentAxis.ToString();
-    }
-
     private void CheckMarkingStatus()
     {
-        if (currentAxis == targetAxis)
+        if (currentAxis == prescription.axis)
         {
-            markingStatusText.text = "Marking OK";
+
             markingOK = true;
         }
         else
@@ -93,38 +129,74 @@ public class fokometre : MonoBehaviour
             markingOK = false;
         }
 
+        CheckCrosshairCentered();
         CheckIfTaskCompleted();
+    }
+
+    private void CheckCrosshairCentered()
+    {
+        float distance = Vector2.Distance(crosshair.anchoredPosition, targetCenter.anchoredPosition);
+        isCrosshairCentered = distance < 10f; 
     }
 
     private void CheckIfTaskCompleted()
     {
-        if (sphereSet && cylinderSet && markingOK)
+        
+        if (sphereSet && cylinderSet && markingOK && isCrosshairCentered)
         {
-            HUDController.instance.CompleteCurrentTask();
+            markingStatusText.text = "Marking OK";
+        }
+        else if (sphereSet && cylinderSet &&markingOK)
+        {
+            markingStatusText.text = "Need Alignment";
+        }
+        else if (isCrosshairCentered)
+        {
+            markingStatusText.text = "Alignment OK";
+        }
+        else if (markingOK)
+        {
+            markingStatusText.text = "Axis OK";
+        }
+        else if(markingOK&& isCrosshairCentered)
+        {
+            markingStatusText.text = "Press +- Button";
+        }
+       
+        else
+        {
+            markingStatusText.text = "Adjusting...";
         }
     }
-    
-    public void SetupPrescription()
-    {
-        targetSphere = prescription.sphere;
-        targetCylinder = prescription.cylinder;
-        targetAxis = prescription.axis;
 
-        ResetValues();
+    public void ConfirmSphereCylinder()
+    {
+        currentSphere = prescription.sphere;
+        currentCylinder = prescription.cylinder;
+
+        sphereSet = true;
+        cylinderSet = true;
+
+        UpdateSphereCylinderText();
     }
 
-    private void ResetValues()
+    private void UpdateSphereCylinderText()
     {
-        currentSphere = 0f;
-        currentCylinder = 0f;
-        currentAxis = 0;
-        sphereSet = false;
-        cylinderSet = false;
-        markingOK = false;
+        sphereText.text = currentSphere.ToString("F2");
+        cylinderText.text = currentCylinder.ToString("F2");
+    }
 
-        sphereText.text = "Sphere: --";
-        cylinderText.text = "Cylinder: --";
-        axisText.text = "Axis: 0";
-        markingStatusText.text = "Adjusting...";
+    private void UpdateAxisText()
+    {
+        axisText.text = "Axis: " + currentAxis.ToString();
+    }
+
+ 
+
+    private void RandomizeCrosshairPosition()
+    {
+        float x = Random.Range(-150f, 150f);
+        float y = Random.Range(-150f, 150f);
+        crosshair.anchoredPosition = new Vector2(x, y);
     }
 }

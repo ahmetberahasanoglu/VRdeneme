@@ -20,6 +20,7 @@ public class Lens : MonoBehaviour
             {
                 isMoving = false;
                 OnLensReachedTarget();
+              //  fokometre.Instance.SetupPrescription();
             }
         }
     }
@@ -36,6 +37,7 @@ public class Lens : MonoBehaviour
     {
         Debug.Log("Hedefe ulastý");
        HUDController.instance.ShowfokoPanel();
+      
         /* if (this.gameObject.name == "lens")
         {
             HUDController.instance.ShowfokoPanel();

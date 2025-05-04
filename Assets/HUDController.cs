@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,6 +28,9 @@ public class HUDController : MonoBehaviour
     private int score = 100;
 
     private bool isTaskCompleted = false;
+    public float warningDisplayDuration = 2f; 
+
+    private Coroutine warningCoroutine;
 
     private void Awake()
     {
@@ -40,7 +44,7 @@ public class HUDController : MonoBehaviour
 
         if (score < 0)
         {
-            EndGame(); // Skor sýfýrýn altýna indiðinde oyunu bitir
+            EndGame(); 
         }
     }
 
@@ -48,7 +52,7 @@ public class HUDController : MonoBehaviour
     {
         gameOverPanel.SetActive(true);
         finalScoreText.text = "Final Score: " + Mathf.Max(score, 0);
-        Time.timeScale = 0f; // Oyunu durdur
+        Time.timeScale = 0f; 
     }
     public void EnableInteractionText(string text)
     {
@@ -71,6 +75,7 @@ public class HUDController : MonoBehaviour
         LockPlayerControls();
         Prescription prescription = GameManager.Instance.selectedPrescription;
         prescriptionText.text = $"Reçete: SPH: {prescription.sphere} CYL: {prescription.cylinder} AXIS: {prescription.axis}";
+       
     }
     public void ShowGlassPanel()
     {
@@ -89,14 +94,26 @@ public class HUDController : MonoBehaviour
 
     public void TryHidefokoPanel()
     {
-        if (isTaskCompleted)
+        if (fokometre.Instance.IsAllConditionsMet())
         {
-            HidefokoPanel();
+            CompleteCurrentTask();
         }
         else
         {
-            ShowWarningMessage("Ýþlem tamamlanmadan çýkamazsýn!");
+            ShowWarningMessage("Tüm deðerleri doðru girmeden iþlemi tamamlayamazsýn!");
         }
+    }
+    public void TryHideLtPanel()
+    {
+        if (lt980.Instance.olcumYapýldý)
+        {
+            isTaskCompleted = true;
+            cihaz2Panel.SetActive(false);
+            raycaster.enabled = false;
+            UnlockPlayerControls();
+            MachineManager.Instance.NextMachine();
+        }
+       
     }
 
     public void HidefokoPanel()
@@ -108,10 +125,22 @@ public class HUDController : MonoBehaviour
 
     private void ShowWarningMessage(string message)
     {
+        if (warningCoroutine != null)
+        {
+            StopCoroutine(warningCoroutine); 
+        }
+
+        warningCoroutine = StartCoroutine(ShowWarningRoutine(message));
+    }
+    private IEnumerator ShowWarningRoutine(string message)
+    {
         warningMessage.SetActive(true);
         warningMessage.GetComponentInChildren<TMP_Text>().text = message;
         DecreaseScore(10);
-        // warning message'i belirli saniyelik gösterme yapýlabilr sonra
+
+        yield return new WaitForSeconds(warningDisplayDuration); 
+
+        warningMessage.SetActive(false);
     }
     public int GetCurrentScore()
     {
