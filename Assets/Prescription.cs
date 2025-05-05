@@ -9,7 +9,7 @@ public class Prescription : ScriptableObject
     public int axis;
     public string lensType;
     public string frameType;
-    public string coatingType;
+    public bool polisaj;
     public string nosePadType;
     public string screwType;
 }

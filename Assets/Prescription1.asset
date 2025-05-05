@@ -17,7 +17,7 @@ MonoBehaviour:
   cylinder: 60
   axis: 90
   lensType: 
-  frameType: 
-  coatingType: 
+  frameType: kemik
+  polisaj: 0
   nosePadType: 
   screwType: 
