@@ -15,9 +15,10 @@ MonoBehaviour:
   prescriptionName: "Sa\u011F Mercek"
   sphere: 40
   cylinder: 20
-  axis: 50
+  axis: 10
   lensType: 
+  leftRight: 0
   frameType: 
-  coatingType: 
+  polisaj: 0
   nosePadType: 
   screwType: 

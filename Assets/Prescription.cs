@@ -8,6 +8,7 @@ public class Prescription : ScriptableObject
     public float cylinder;
     public int axis;
     public string lensType;
+    public bool leftRight;
     public string frameType;
     public bool polisaj;
     public string nosePadType;
