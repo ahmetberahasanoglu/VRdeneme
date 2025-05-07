@@ -4,7 +4,7 @@ public class Lens : MonoBehaviour
 {
     public Transform targetPosition; 
     public float moveSpeed = 3f;
-    private bool isMoving = false;
+    public bool isMoving = false;
   
 
   
@@ -36,7 +36,15 @@ public class Lens : MonoBehaviour
     private void OnLensReachedTarget()
     {
         Debug.Log("Hedefe ulastý");
-       HUDController.instance.ShowfokoPanel();
+        if (this.gameObject.name == "lens")
+        {
+            HUDController.instance.ShowfokoPanel();
+        }
+        else if (this.gameObject.name == "lensforcihaz3")
+        {
+            HUDController.instance.ShowCihaz3Panel();
+        }
+      
       
         /* if (this.gameObject.name == "lens")
         {

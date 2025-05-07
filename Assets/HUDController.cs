@@ -12,6 +12,7 @@ public class HUDController : MonoBehaviour
 
     [Header("FokoPanel")]
     [SerializeField] GameObject fokoPanel;
+    
     [SerializeField] TMP_Text prescriptionText;
     [SerializeField] GameObject warningMessage;
 
@@ -20,6 +21,8 @@ public class HUDController : MonoBehaviour
     [SerializeField] TMP_Text simpleText;
 
     GraphicRaycaster raycaster;
+
+    [SerializeField] GameObject cihaz3Panel;
 
     public TMP_Text scoreText;
     public GameObject gameOverPanel;
@@ -77,6 +80,16 @@ public class HUDController : MonoBehaviour
         prescriptionText.text = $"Reçete: SPH: {prescription.sphere} CYL: {prescription.cylinder} AXIS: {prescription.axis}";
        
     }
+    public void ShowCihaz3Panel()
+    {
+        Debug.Log("panel goster.");
+        isTaskCompleted = false;
+
+        cihaz3Panel.SetActive(true);
+        raycaster.enabled = true;
+        LockPlayerControls();
+        
+    }
     public void ShowGlassPanel()
     {
         isTaskCompleted=false;
@@ -114,6 +127,18 @@ public class HUDController : MonoBehaviour
             MachineManager.Instance.NextMachine();
         }
        
+    }
+    public void TryHideCihaz3Panel()
+    {
+        if (cihaz3.instance.olcumYapildi)
+        {
+            isTaskCompleted = true;
+            cihaz3Panel.SetActive(false);
+            raycaster.enabled = false;
+            UnlockPlayerControls();
+            MachineManager.Instance.NextMachine();
+        }
+
     }
 
     public void HidefokoPanel()

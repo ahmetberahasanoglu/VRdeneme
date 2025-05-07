@@ -56,7 +56,7 @@ public class lt980 : MonoBehaviour
 
         yield return new WaitForSeconds(stepDelay);
         olcuSlider.value = 1f;
-        olcumState.text = "Ölçüm Tamamlandı ✅";
+        olcumState.text = "Ölçüm Tamamlandı";
 
         olcumYapıldı = true;
         isMeasuring = false;
