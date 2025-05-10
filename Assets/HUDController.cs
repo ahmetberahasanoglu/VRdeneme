@@ -23,6 +23,7 @@ public class HUDController : MonoBehaviour
     GraphicRaycaster raycaster;
 
     [SerializeField] GameObject cihaz3Panel;
+    [SerializeField] GameObject cihaz4Panel;
 
     public TMP_Text scoreText;
     public GameObject gameOverPanel;
@@ -90,6 +91,15 @@ public class HUDController : MonoBehaviour
         LockPlayerControls();
         
     }
+    public void ShowCihaz4Panel()
+    {     
+        isTaskCompleted = false;
+
+        cihaz4Panel.SetActive(true);
+        raycaster.enabled = true;
+        LockPlayerControls();
+
+    }
     public void ShowGlassPanel()
     {
         isTaskCompleted=false;
@@ -131,6 +141,18 @@ public class HUDController : MonoBehaviour
     public void TryHideCihaz3Panel()
     {
         if (cihaz3.instance.olcumYapildi)
+        {
+            isTaskCompleted = true;
+            cihaz3Panel.SetActive(false);
+            raycaster.enabled = false;
+            UnlockPlayerControls();
+            MachineManager.Instance.NextMachine();
+        }
+
+    }
+    public void TryHideCihaz4Panel()
+    {
+        if (Cihaz4.instance.islemTamamlandi)
         {
             isTaskCompleted = true;
             cihaz3Panel.SetActive(false);

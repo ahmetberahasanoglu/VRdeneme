@@ -7,10 +7,12 @@ public class Prescription : ScriptableObject
     public float sphere;
     public float cylinder;
     public int axis;
-    public string lensType;
+   
     public bool leftRight;
+    public string cam;
     public string frameType;
+    public string mod;
     public bool polisaj;
-    public string nosePadType;
-    public string screwType;
+    public bool capak;
+    public string odaklama;
 }

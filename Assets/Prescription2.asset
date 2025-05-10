@@ -16,9 +16,10 @@ MonoBehaviour:
   sphere: 40
   cylinder: 20
   axis: 10
-  lensType: 
   leftRight: 0
-  frameType: 
+  cam: CR39
+  frameType: kemik
+  mod: "D\xFCz"
   polisaj: 0
-  nosePadType: 
-  screwType: 
+  capak: 0
+  odaklama: Pasif
