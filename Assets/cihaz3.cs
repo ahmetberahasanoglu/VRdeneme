@@ -1,3 +1,4 @@
+using NUnit.Framework.Constraints;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -74,22 +75,25 @@ public class cihaz3 : MonoBehaviour
     private void CheckCorrectPosition()
     {
         float tolerance = 5f;
+        Vector3 dikeyWorldX = dikeyCizgi.transform.position;
+        Vector3 yatayWorldY = yatayCizgi.transform.position;
+        Vector3 ortaWorld = ortaNokta.transform.position;
 
-        Vector2 dikeyPos = dikeyCizgi.anchoredPosition;
-        Vector2 yatayPos = yatayCizgi.anchoredPosition;
-        Vector2 intersection = new Vector2(dikeyPos.x, yatayPos.y);
-        Vector2 ortaPos = ortaNokta.anchoredPosition;
+        // Kesiþim noktasý: dikey çizginin X'i, yatay çizginin Y'si
+        Vector2 intersection = new Vector2(dikeyWorldX.x, yatayWorldY.y);
 
-        float distance = Vector2.Distance(intersection, ortaPos);
+        // Kesiþim noktasý ile orta nokta arasýndaki mesafeyi ölç
+        float distance = Vector2.Distance(intersection, ortaWorld);
 
         if (distance <= tolerance)
         {
             olcumYapildi = true;
-            ShowError("Ölçüm doðru");
+            errorText.text = "Doðru noktadasýn. Sonraki makineye geç!";
         }
         else
         {
             olcumYapildi = false;
+            errorText.text = "Henüz doðru noktayý bulamadýn.";
         }
     }
     private void RandomizeYatayNoktaPosition()
@@ -105,12 +109,14 @@ public class cihaz3 : MonoBehaviour
     private void OnDikeyButtonClicked()
     {
         dikeyInputField.gameObject.SetActive(true);
+        yatayInputField.gameObject.SetActive(false);
         dikeyInputField.onEndEdit.AddListener(SetDikeyCizgiPosition);
     }
 
     private void OnYatayButtonClicked()
     {
         yatayInputField.gameObject.SetActive(true);
+        dikeyInputField.gameObject.SetActive(false);
         yatayInputField.onEndEdit.AddListener(SetYatayCizgiPosition);
     }
 
@@ -152,17 +158,16 @@ public class cihaz3 : MonoBehaviour
     private void OnTracerButtonClicked()
     {
         tracerPressed = true;
-        errorText.text = ""; 
+        errorText.text = "";
+        tracerButton.interactable = false;
 
-        // Örnek deðerler
+
         dikeyCizgiButton.GetComponentInChildren<TextMeshProUGUI>().text = "66,10";
         DBLtext.text = "15,40";
         yatayCizgiButton.GetComponentInChildren<TextMeshProUGUI>().text = "+2,0";
         yatayCizgiDeger.text = "+2,0";
 
        
-
-        // Left/Right kontrolü
         if (prescription != null)
         {
             if (prescription.leftRight)
@@ -180,7 +185,7 @@ public class cihaz3 : MonoBehaviour
     {
         errorText.text = message;
         CancelInvoke(nameof(ClearError));
-        Invoke(nameof(ClearError), 2f); // 2 saniye sonra hata kaybolur
+        Invoke(nameof(ClearError), 2f); 
     }
 
     private void ClearError()
