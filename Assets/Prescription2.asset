@@ -23,3 +23,7 @@ MonoBehaviour:
   polisaj: 0
   capak: 0
   odaklama: Pasif
+  x: 150
+  y: -20
+  pd: 49
+  plus: -0.6

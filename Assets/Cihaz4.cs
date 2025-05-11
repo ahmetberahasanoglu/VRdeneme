@@ -36,9 +36,43 @@ public class Cihaz4 : MonoBehaviour
     public void onPressedZero()
     {
         modelCagir.gameObject.SetActive(true);
-        //cihaz3'de bitirirken sahip oldugumuz yataycizgidegeri ve dikeyCizgiDegerini al ve
-        // buradaki yataycizgideger ve dikeycizgidegerlerine eþitle
+
+     
+        dikeyCizgiDeger.text = prescription.pd.ToString();
+        yatayCizgiDeger.text = prescription.plus.ToString();
+        yatayCizgiDeger2.text = prescription.plus.ToString();
+
+        if (prescription != null && prescription.leftRight)
+        {
+            rotateModelIfLeft();
+        }
     }
+    public void KontrolEtVeBaslat()
+    {
+        if (prescription == null)
+        {
+            Debug.LogError("Prescription bulunamadý!");
+            return;
+        }
+
+        bool camEslesme = Cam.options[Cam.value].text == prescription.cam;
+        bool cerceveEslesme = Cerceve.options[Cerceve.value].text == prescription.frameType;
+        bool modEslesme = Mod.options[Mod.value].text == prescription.mod;
+        bool polisajEslesme = Polisaj.options[Polisaj.value].text.ToLower() == (prescription.polisaj ? "evet" : "hayýr");
+        bool capakEslesme = Capak.options[Capak.value].text.ToLower() == (prescription.capak ? "evet" : "hayýr");
+        bool odaklamaEslesme = Odaklama.options[Odaklama.value].text == prescription.odaklama;
+
+        if (camEslesme && cerceveEslesme && modEslesme && polisajEslesme && capakEslesme && odaklamaEslesme)
+        {
+            BaslatOlcum();
+        }
+        else
+        {
+            kesimState.text = "UYARI: Bilgiler Reçete ile eþleþmiyor!";
+            HUDController.instance.DecreaseScore(10);
+        }
+    }
+
     private void Start()
     {
         if (GameManager.Instance.selectedPrescription != null)

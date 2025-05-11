@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Oyun baþladý. Seçilen reçete: " + prescription.prescriptionName);
 
         List<Machine> machineList = new List<Machine>(FindObjectsOfType<Machine>());
-        machineList.Sort((a, b) => a.name.CompareTo(b.name));
+        machineList.Sort((a, b) => a.name.CompareTo(b.name));//bu kodu sonra degistirebilirim
 
         MachineManager.Instance.StartMachineSequence(machineList);
     }

@@ -25,6 +25,7 @@ public class cihaz3 : MonoBehaviour
     public TextMeshProUGUI xTxt;
     public TextMeshProUGUI yText;
     public TextMeshProUGUI errorText; 
+    public TextMeshProUGUI hintText; 
 
     [Header("Input Fields")]
     public TMP_InputField dikeyInputField;
@@ -46,13 +47,15 @@ public class cihaz3 : MonoBehaviour
         else
             Debug.LogError("Prescription null!");
 
-        RandomizeYatayNoktaPosition();
+       // RandomizeYatayNoktaPosition(); random olmayacak
+       getYatayNoktaPosition();
 
         dikeyCizgiButton.onClick.AddListener(() =>
         {
             if (!tracerPressed)
             {
                 ShowError("Önce tracer butonuna basýnýz");
+                HUDController.instance.DecreaseScore(5);
                 return;
             }
             OnDikeyButtonClicked();
@@ -63,6 +66,7 @@ public class cihaz3 : MonoBehaviour
             if (!tracerPressed)
             {
                 ShowError("Önce tracer butonuna basýnýz");
+                HUDController.instance.DecreaseScore(5);
                 return;
             }
             OnYatayButtonClicked();
@@ -78,11 +82,7 @@ public class cihaz3 : MonoBehaviour
         Vector3 dikeyWorldX = dikeyCizgi.transform.position;
         Vector3 yatayWorldY = yatayCizgi.transform.position;
         Vector3 ortaWorld = ortaNokta.transform.position;
-
-        // Kesiþim noktasý: dikey çizginin X'i, yatay çizginin Y'si
         Vector2 intersection = new Vector2(dikeyWorldX.x, yatayWorldY.y);
-
-        // Kesiþim noktasý ile orta nokta arasýndaki mesafeyi ölç
         float distance = Vector2.Distance(intersection, ortaWorld);
 
         if (distance <= tolerance)
@@ -96,14 +96,19 @@ public class cihaz3 : MonoBehaviour
             errorText.text = "Henüz doðru noktayý bulamadýn.";
         }
     }
-    private void RandomizeYatayNoktaPosition()
+  /*  private void RandomizeYatayNoktaPosition()
     {
         float x = Random.Range(15f, 300f);
         float y = Random.Range(-260f, 270f);
         yatayNoktalar.anchoredPosition = new Vector2(x, y);
       
+    } random yapmak yerine her receteye uygun bir pozisyon atamayý düsünüyorum
+  */
+  private void getYatayNoktaPosition()
+    {
+       
+        yatayNoktalar.anchoredPosition = new Vector2(prescription.x, prescription.y);
     }
-
     
 
     private void OnDikeyButtonClicked()
@@ -160,8 +165,7 @@ public class cihaz3 : MonoBehaviour
         tracerPressed = true;
         errorText.text = "";
         tracerButton.interactable = false;
-
-
+        hintText.text = $"Ýpucu: PD: {prescription.pd}";
         dikeyCizgiButton.GetComponentInChildren<TextMeshProUGUI>().text = "66,10";
         DBLtext.text = "15,40";
         yatayCizgiButton.GetComponentInChildren<TextMeshProUGUI>().text = "+2,0";

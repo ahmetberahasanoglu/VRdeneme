@@ -12,14 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a4c398506004ee4c81a594e3c555e85, type: 3}
   m_Name: Prescription1
   m_EditorClassIdentifier: 
+  odaklama: Pasif
+  cam: CR39
+  frameType: Kemik
+  mod: "D\xFCz"
   prescriptionName: Sol Mercek
   sphere: 0
   cylinder: 60
-  axis: 90
+  axis: 40
   leftRight: 1
-  cam: CR39
-  frameType: kemik
-  mod: "D\xFCz"
   polisaj: 0
   capak: 0
-  odaklama: Pasif
+  x: 70
+  y: 100
+  pd: 23
+  plus: 3.3

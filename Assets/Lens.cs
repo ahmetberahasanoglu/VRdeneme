@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class Lens : MonoBehaviour
 {
-    public Transform targetPosition; 
+    public Transform targetPosition;
     public float moveSpeed = 3f;
     public bool isMoving = false;
-  
 
-  
+
+
     private void Update()
     {
-       
-       
+
+
         if (isMoving)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition.position, moveSpeed * Time.deltaTime);
@@ -20,17 +20,27 @@ public class Lens : MonoBehaviour
             {
                 isMoving = false;
                 OnLensReachedTarget();
-              //  fokometre.Instance.SetupPrescription();
+                //  fokometre.Instance.SetupPrescription();
             }
         }
     }
 
     public void StartMoving()
     {
-        if (MachineManager.Instance.currentMachineIndex==0) {
+        if (MachineManager.Instance.currentMachineIndex == 0 && this.gameObject.name == "lens")
+        {
+            isMoving = true;
+        }
+        else if (this.gameObject.name == "lensforcihaz3"&& MachineManager.Instance.currentMachineIndex == 2)
+        {
+            isMoving = true;
+        }
+        else if (this.gameObject.name == "lensforcihaz4" && MachineManager.Instance.currentMachineIndex == 3)
+        {
             isMoving = true;
         }
        
+
     }
 
     private void OnLensReachedTarget()
@@ -44,8 +54,12 @@ public class Lens : MonoBehaviour
         {
             HUDController.instance.ShowCihaz3Panel();
         }
-      
-      
+        else if (this.gameObject.name == "lensforcihaz4")
+        {
+            HUDController.instance.ShowCihaz4Panel();
+        }
+
+
         /* if (this.gameObject.name == "lens")
         {
             HUDController.instance.ShowfokoPanel();

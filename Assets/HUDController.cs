@@ -44,7 +44,7 @@ public class HUDController : MonoBehaviour
     public void DecreaseScore(int amount)
     {
         score -= amount;
-        scoreText.text = "Score: " + score;
+        scoreText.text = "Baþarý Notu: " + score;
 
         if (score < 0)
         {
@@ -55,7 +55,7 @@ public class HUDController : MonoBehaviour
     public void EndGame()
     {
         gameOverPanel.SetActive(true);
-        finalScoreText.text = "Final Score: " + Mathf.Max(score, 0);
+        finalScoreText.text = "Notunuz: " + Mathf.Max(score, 0);
         Time.timeScale = 0f; 
     }
     public void EnableInteractionText(string text)
