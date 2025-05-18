@@ -28,9 +28,9 @@
         cylinder = Random.Range(-24, 25) * 0.25f; 
         axis = Random.Range(0, 181);
         System.Random rand = new System.Random();
-        pd = rand.Next(-10000, 10001) / 100f;
+        pd = rand.Next(0, 7001) / 100f;
         System.Random rand1 = new System.Random();
-        plus = rand1.Next(-1000, 1001) / 100f;
+        plus = rand1.Next(-800, 801) / 100f;
 
 
     }

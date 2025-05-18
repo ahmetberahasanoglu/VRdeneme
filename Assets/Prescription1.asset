@@ -17,13 +17,13 @@ MonoBehaviour:
   frameType: Kemik
   mod: "D\xFCz"
   prescriptionName: "G\xF6zl\xFCk"
-  sphere: -6.227646
-  cylinder: -0.3088627
-  axis: 56
+  sphere: -3.75
+  cylinder: -5.75
+  axis: 129
   leftRight: 1
   polisaj: 0
   capak: 0
-  x: 70
-  y: 100
-  pd: 23
-  plus: 3.3
+  x: 200
+  y: 50
+  pd: 19.14
+  plus: 9.86

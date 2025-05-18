@@ -52,6 +52,6 @@ public class GameManager : MonoBehaviour
         //int score = ScoreManager.Instance.CalculateScore(selectedPrescription, currentPlayerSelection);
         //Debug.Log("Oyuncu puaný: " + score + "/5");
 
-        //HUDController.instance.ShowResult(score);
+        HUDController.instance.EndGame();
     }
 }

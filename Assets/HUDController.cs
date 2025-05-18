@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class HUDController : MonoBehaviour
@@ -31,8 +32,12 @@ public class HUDController : MonoBehaviour
     private Prescription prescription;
     private int score = 100;
 
+
     private bool isTaskCompleted = false;
-    public float warningDisplayDuration = 2f; 
+    public float warningDisplayDuration = 2f;
+    public AudioSource audioSource;
+    public AudioClip failClip;
+    public AudioClip positiveClip;
 
     private Coroutine warningCoroutine;
 
@@ -50,7 +55,7 @@ public class HUDController : MonoBehaviour
     {
         score -= amount;
         scoreText.text = "Baþarý Notu: " + score;
-        //basarýsýzlýk sesi cýkar burada
+        audioSource.PlayOneShot(failClip);
         if (score < 0)
         {
             EndGame(); 
@@ -116,6 +121,7 @@ public class HUDController : MonoBehaviour
     public void CompleteCurrentTask()
     {
         isTaskCompleted = true;
+        audioSource.PlayOneShot(positiveClip);
         HidefokoPanel();
         MachineManager.Instance.NextMachine();
     }
@@ -143,6 +149,7 @@ public class HUDController : MonoBehaviour
             cihaz2Panel.SetActive(false);
             raycaster.enabled = false;
             UnlockPlayerControls();
+            audioSource.PlayOneShot(positiveClip);
             MachineManager.Instance.NextMachine();
         }
        
@@ -155,6 +162,7 @@ public class HUDController : MonoBehaviour
             cihaz3Panel.SetActive(false);
             raycaster.enabled = false;
             UnlockPlayerControls();
+            audioSource.PlayOneShot(positiveClip);
             MachineManager.Instance.NextMachine();
         }
 
@@ -167,6 +175,7 @@ public class HUDController : MonoBehaviour
             cihaz4Panel.SetActive(false);
             raycaster.enabled = false;
             UnlockPlayerControls();
+            audioSource.PlayOneShot(positiveClip);
             MachineManager.Instance.NextMachine();
         }
 
