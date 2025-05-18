@@ -42,8 +42,8 @@ public class cihaz3 : MonoBehaviour
 
     private void Start()
     {
-        if (GameManager.Instance.selectedPrescription != null)
-            prescription = GameManager.Instance.selectedPrescription;
+        if (GameManager.Instance.currentPrescription != null)//  if (GameManager.Instance.selectedPrescription != null)
+            prescription = GameManager.Instance.currentPrescription;
         else
             Debug.LogError("Prescription null!");
 
@@ -107,7 +107,7 @@ public class cihaz3 : MonoBehaviour
   private void getYatayNoktaPosition()
     {
        
-        yatayNoktalar.anchoredPosition = new Vector2(prescription.x, prescription.y);
+        yatayNoktalar.anchoredPosition = new Vector2(prescription.pd*3, prescription.plus*4);
     }
     
 

@@ -16,10 +16,10 @@ MonoBehaviour:
   cam: CR39
   frameType: Kemik
   mod: "D\xFCz"
-  prescriptionName: Sol Mercek
-  sphere: 0
-  cylinder: 60
-  axis: 40
+  prescriptionName: "G\xF6zl\xFCk"
+  sphere: -6.227646
+  cylinder: -0.3088627
+  axis: 56
   leftRight: 1
   polisaj: 0
   capak: 0

@@ -39,8 +39,8 @@ public class Cihaz4 : MonoBehaviour
 
      
         dikeyCizgiDeger.text = prescription.pd.ToString();
-        yatayCizgiDeger.text = prescription.plus.ToString();
-        yatayCizgiDeger2.text = prescription.plus.ToString();
+        yatayCizgiDeger.text = ((prescription.plus)/7).ToString();
+        yatayCizgiDeger2.text = ((prescription.plus) / 7).ToString();
 
         if (prescription != null && prescription.leftRight)
         {
@@ -75,8 +75,8 @@ public class Cihaz4 : MonoBehaviour
 
     private void Start()
     {
-        if (GameManager.Instance.selectedPrescription != null)
-            prescription = GameManager.Instance.selectedPrescription;
+        if (GameManager.Instance.currentPrescription != null)//   if (GameManager.Instance.selectedPrescription != null)
+            prescription = GameManager.Instance.currentPrescription;
         else
             Debug.LogError("Prescription null!");
     }
@@ -107,8 +107,10 @@ public class Cihaz4 : MonoBehaviour
         yield return new WaitForSeconds(stepDelay);
         islemSlider.value = 1f;
         kesimState.text = "Ölçüm Tamamlandý";
-
+       
         kesimYapildi = true;
         isMeasuring = false;
+        islemTamamlandi = true;
+        HUDController.instance.TryHideCihaz4Panel();
     }
 }

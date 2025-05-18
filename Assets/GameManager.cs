@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public Prescription selectedPrescription;
-   // public PlayerSelections currentPlayerSelection;
+    public Prescription basePrescription; 
+    public Prescription currentPrescription;
 
 
     public enum GameState
@@ -30,11 +30,12 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    public void StartGame(Prescription prescription)
+  
+    public void StartGame(Prescription prescription)    
     {
-        selectedPrescription = prescription;
+        currentPrescription = prescription;
         currentState = GameState.InProgress;
+        currentPrescription.GenerateRandomValues();
 
         Debug.Log("Oyun baþladý. Seçilen reçete: " + prescription.prescriptionName);
 

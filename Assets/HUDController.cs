@@ -28,7 +28,7 @@ public class HUDController : MonoBehaviour
     public TMP_Text scoreText;
     public GameObject gameOverPanel;
     public TMP_Text finalScoreText;
-
+    private Prescription prescription;
     private int score = 100;
 
     private bool isTaskCompleted = false;
@@ -41,11 +41,16 @@ public class HUDController : MonoBehaviour
         instance = this;
         raycaster = GetComponent<GraphicRaycaster>();   
     }
+    private void Start()
+    {
+        if (GameManager.Instance.currentPrescription != null)// if (GameManager.Instance.selectedPrescription != null)
+            prescription = GameManager.Instance.currentPrescription;
+    }
     public void DecreaseScore(int amount)
     {
         score -= amount;
         scoreText.text = "Baþarý Notu: " + score;
-
+        //basarýsýzlýk sesi cýkar burada
         if (score < 0)
         {
             EndGame(); 
@@ -77,7 +82,7 @@ public class HUDController : MonoBehaviour
         fokoPanel.SetActive(true);
         raycaster.enabled = true;
         LockPlayerControls();
-        Prescription prescription = GameManager.Instance.selectedPrescription;
+        Prescription prescription = GameManager.Instance.currentPrescription;
         prescriptionText.text = $"Reçete: SPH: {prescription.sphere} CYL: {prescription.cylinder} AXIS: {prescription.axis}";
        
     }
@@ -113,6 +118,10 @@ public class HUDController : MonoBehaviour
         isTaskCompleted = true;
         HidefokoPanel();
         MachineManager.Instance.NextMachine();
+    }
+    public void ChangeGlass()
+    {
+        prescription.leftRight = false;
     }
 
     public void TryHidefokoPanel()
@@ -155,7 +164,7 @@ public class HUDController : MonoBehaviour
         if (Cihaz4.instance.islemTamamlandi)
         {
             isTaskCompleted = true;
-            cihaz3Panel.SetActive(false);
+            cihaz4Panel.SetActive(false);
             raycaster.enabled = false;
             UnlockPlayerControls();
             MachineManager.Instance.NextMachine();

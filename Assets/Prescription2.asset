@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a4c398506004ee4c81a594e3c555e85, type: 3}
   m_Name: Prescription2
   m_EditorClassIdentifier: 
-  prescriptionName: "Sa\u011F Mercek"
-  sphere: 40
-  cylinder: 20
-  axis: 10
-  leftRight: 0
+  odaklama: Pasif
   cam: CR39
   frameType: kemik
   mod: "D\xFCz"
+  prescriptionName: "Sa\u011F Mercek"
+  sphere: 4
+  cylinder: 5
+  axis: 10
+  leftRight: 0
   polisaj: 0
   capak: 0
-  odaklama: Pasif
   x: 150
   y: -20
   pd: 49

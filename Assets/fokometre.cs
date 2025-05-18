@@ -38,8 +38,8 @@ public class fokometre : MonoBehaviour
     }
     private void Start()
     {
-        if (GameManager.Instance.selectedPrescription != null)
-            prescription = GameManager.Instance.selectedPrescription;
+        if (GameManager.Instance.currentPrescription != null)
+            prescription = GameManager.Instance.currentPrescription;
         else
             Debug.LogError("Prescription null!");
 
