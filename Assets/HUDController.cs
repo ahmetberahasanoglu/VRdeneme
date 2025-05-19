@@ -38,6 +38,7 @@ public class HUDController : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip failClip;
     public AudioClip positiveClip;
+    public AudioClip fireClip;
 
     private Coroutine warningCoroutine;
 
@@ -61,7 +62,10 @@ public class HUDController : MonoBehaviour
             EndGame(); 
         }
     }
-
+    public void onIsiticiInteracted()
+    {
+        audioSource.PlayOneShot(fireClip);
+    }
     public void EndGame()
     {
         gameOverPanel.SetActive(true);

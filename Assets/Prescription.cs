@@ -26,7 +26,7 @@
     {
         sphere = Random.Range(-28, 29) * 0.25f;  
         cylinder = Random.Range(-24, 25) * 0.25f; 
-        axis = Random.Range(0, 181);
+        axis = Random.Range(0, 20);//180 yap
         System.Random rand = new System.Random();
         pd = rand.Next(0, 7001) / 100f;
         System.Random rand1 = new System.Random();
