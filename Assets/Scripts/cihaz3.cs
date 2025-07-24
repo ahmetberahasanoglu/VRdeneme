@@ -188,6 +188,7 @@ public class cihaz3 : MonoBehaviour
     private void ShowError(string message)
     {
         errorText.text = message;
+        AudioManager.Instance.PlaySound(AudioManager.Instance.warningSound, 0.9f);
         CancelInvoke(nameof(ClearError));
         Invoke(nameof(ClearError), 2f); 
     }

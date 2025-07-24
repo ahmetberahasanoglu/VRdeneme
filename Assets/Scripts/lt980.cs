@@ -43,6 +43,7 @@ public class lt980 : MonoBehaviour
         isMeasuring = true;
         olcuSlider.value = 0f;
         olcumState.text = "Ölçüm Başlıyor...";
+        AudioManager.Instance.PlaySound(AudioManager.Instance.glassCutSound, 0.9f);
 
         yield return new WaitForSeconds(stepDelay);
         olcuSlider.value = 0.33f;

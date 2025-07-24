@@ -20,7 +20,7 @@ public class MachineInteractionManager : MonoBehaviour
     {
         if (GameManager.Instance.currentState != GameManager.GameState.InProgress)
         {
-            ShowError("Önce bir reçete seçmelisiniz!");
+            ShowError("Önce bir reçete seçmelisin!");
             return;
         }
         if (machine != MachineManager.Instance.GetCurrentMachine())
@@ -39,6 +39,7 @@ public class MachineInteractionManager : MonoBehaviour
     {
         interactionUI.SetActive(true);
         interactionText.text = msg;
+        AudioManager.Instance.PlaySound(AudioManager.Instance.warningSound, 0.9f);
         Invoke(nameof(HideError), 2f); 
     }
 

@@ -43,6 +43,9 @@ public class HUDController : MonoBehaviour
 
     private Coroutine warningCoroutine;
 
+
+    public GameObject replyPanel;
+
     private void Awake()
     {
         instance = this;
@@ -52,6 +55,12 @@ public class HUDController : MonoBehaviour
     {
         if (GameManager.Instance.currentPrescription != null)// if (GameManager.Instance.selectedPrescription != null)
             prescription = GameManager.Instance.currentPrescription;
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            replyPanel.SetActive(true);
+        }
     }
     public void DecreaseScore(int amount)
     {
@@ -122,6 +131,12 @@ public class HUDController : MonoBehaviour
         LockPlayerControls();
 
     }
+    public void HideHocaPanel()
+    {
+        hocaPanel.SetActive(false);
+        raycaster.enabled = false;
+        UnlockPlayerControls();
+    }
     public void ShowGlassPanel()
     {
         isTaskCompleted=false;
@@ -170,6 +185,7 @@ public class HUDController : MonoBehaviour
     {
         if (cihaz3.instance.olcumYapildi)
         {
+            AudioManager.Instance.PlaySound(AudioManager.Instance.stickSound, 0.9f);
             isTaskCompleted = true;
             cihaz3Panel.SetActive(false);
             raycaster.enabled = false;

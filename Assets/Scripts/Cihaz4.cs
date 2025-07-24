@@ -92,7 +92,7 @@ public class Cihaz4 : MonoBehaviour
         isMeasuring = true;
         islemSlider.value = 0f;
         kesimState.text = "Kesim Baþlýyor...";
-
+        AudioManager.Instance.PlaySound(AudioManager.Instance.glassCutSound, 0.9f);
         yield return new WaitForSeconds(stepDelay);
         islemSlider.value = 0.33f;
         kesimState.text = "Merceðe Su döküldü...";
