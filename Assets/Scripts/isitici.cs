@@ -10,9 +10,14 @@ public class isitici : MonoBehaviour
     }
     public void onInteraction()
     {
-        animator.SetTrigger("interacted");
-        HUDController.instance.onIsiticiInteracted();
-        StartCoroutine(Isitici());
+        
+        if (MachineManager.Instance.currentMachineIndex == 4)//hardcodeladýk burayý belki düzeltirm
+        {
+            animator.SetTrigger("interacted");
+            HUDController.instance.onIsiticiInteracted();
+            StartCoroutine(Isitici());
+        }
+       
         
     }
    private IEnumerator Isitici()

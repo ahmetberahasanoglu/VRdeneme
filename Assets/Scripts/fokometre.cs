@@ -82,34 +82,35 @@ public class fokometre : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Vector2 mousePos;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                crosshair.parent as RectTransform,
-                Input.mousePosition,
-                null,
-                out mousePos);
-
-            if (RectTransformUtility.RectangleContainsScreenPoint(crosshair, Input.mousePosition))
+            Debug.Log("Mouse tiklandi");
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
             {
-                isDragging = true;
+                if (hit.transform == crosshair.transform)
+                {
+                    isDragging = true;
+                }
             }
         }
 
         if (Input.GetMouseButtonUp(0))
         {
+            Debug.Log("Mouse birakildi");
             isDragging = false;
         }
 
         if (isDragging)
         {
-            Vector2 localMousePos;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                crosshair.parent as RectTransform,
-                Input.mousePosition,
-                null,
-                out localMousePos);
-
-            crosshair.anchoredPosition = localMousePos;
+            Debug.Log("surukluoz");
+            Plane plane = new Plane(Vector3.forward, crosshair.position); 
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            float distance;
+            if (plane.Raycast(ray, out distance))
+            {
+                Vector3 worldPos = ray.GetPoint(distance);
+                crosshair.position = worldPos;
+            }
         }
     }
     public bool IsAllConditionsMet()
