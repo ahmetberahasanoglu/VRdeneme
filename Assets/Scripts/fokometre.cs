@@ -109,7 +109,7 @@ public class fokometre : MonoBehaviour
             if (plane.Raycast(ray, out distance))
             {
                 Vector3 worldPos = ray.GetPoint(distance);
-                crosshair.position = worldPos;
+                crosshair.position = new Vector3(worldPos.x, worldPos.y, crosshair.position.z);
             }
         }
     }
