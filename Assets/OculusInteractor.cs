@@ -13,8 +13,8 @@ public class OculusInteractor : XRBaseInteractor
     public LayerMask interactionLayerMask = -1;
 
     [Header("UI References")]
-    public GameObject interactionUI;
-    public TextMeshProUGUI interactionText;
+   // public GameObject interactionUI;
+  //  public TextMeshProUGUI interactionText;
 
 
     private Interactable currentInteractable;

@@ -20,17 +20,17 @@ public class MachineInteractionManager : MonoBehaviour
     {
         if (GameManager.Instance.currentState != GameManager.GameState.InProgress)
         {
-            ShowError("Önce bir reçete seçmelisin!");
+            // ShowError("Önce bir reçete seçmelisin!");//burada error gostermesin ses cıksın
             return;
         }
         if (machine != MachineManager.Instance.GetCurrentMachine())
         {
-            ShowError($"Şu anda {machine.machineName} kullanılamaz.");
+            //ShowError($"Şu anda {machine.machineName} kullanılamaz.");burada error gostermesin ses cıksın
             return;
         }
 
-        LockPlayerMovement();
-        Debug.Log("LockMovementCalısmalı");
+      //  LockPlayerMovement(); VR'dayken gerek yok
+       // Debug.Log("LockMovementCalısmalı");
         MovePlayerToMachine(machine);
         machine.Interact();
     }
