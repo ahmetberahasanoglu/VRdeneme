@@ -7,8 +7,8 @@ public class Interactor : MonoBehaviour
     public float interactionDistance = 3f;
 
     Interactable currentInteractable;
-    public GameObject interactionUI;
-    public TextMeshProUGUI interactionText;
+   // public GameObject interactionUI;
+   // public TextMeshProUGUI interactionText;
      
     private bool wasHitSomething = false;
 
@@ -61,11 +61,11 @@ public class Interactor : MonoBehaviour
     {
         currentInteractable = newInteractable;
         currentInteractable.EnableOutline();
-        HUDController.instance.EnableInteractionText(currentInteractable.message); 
+       //HUDController.instance.EnableInteractionText(currentInteractable.message); 
     }
     void DisableCurrentInteractable()
     {
-        HUDController.instance.DisableInteractionText();
+       // HUDController.instance.DisableInteractionText();
         if (currentInteractable)
         {
             currentInteractable.DisableOutline();

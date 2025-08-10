@@ -116,11 +116,11 @@ public class OculusInteractor : XRBaseInteractor
         currentInteractable = newInteractable;
         currentInteractable.EnableOutline();
 
-        // HUD Controller varsa kullan
+        /* 
         if (HUDController.instance != null)
         {
             HUDController.instance.EnableInteractionText(currentInteractable.message);
-        }
+        }*/
 
         // Haptic feedback ver
         if (controller != null)
@@ -130,12 +130,12 @@ public class OculusInteractor : XRBaseInteractor
     }
 
     private void DisableCurrentInteractable()
-    {
+    {/*
         if (HUDController.instance != null)
         {
             HUDController.instance.DisableInteractionText();
         }
-
+        */
         if (currentInteractable)
         {
             currentInteractable.DisableOutline();

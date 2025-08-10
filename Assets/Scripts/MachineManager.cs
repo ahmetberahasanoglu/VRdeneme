@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,16 +10,25 @@ public class MachineManager : MonoBehaviour
     private GameObject currentHighlight;
     public List<Machine> machines = new List<Machine>();
     public int currentMachineIndex = 0;
+    [SerializeField] private TextMeshProUGUI hocaInstruction;
 
 
     private void Awake()
     {
         Instance = this;
     }
+    private void Update()
+    {/*
+        if(currentMachineIndex >= 0) {
+            hocaInstruction.text = machines[currentMachineIndex].gameObject.name;
+        }*/
+       
+    }
     public Machine GetCurrentMachine()
     {
         if (currentMachineIndex >= 0 && currentMachineIndex < machines.Count)
         {
+
             return machines[currentMachineIndex];
         }
         else
@@ -27,17 +37,18 @@ public class MachineManager : MonoBehaviour
             return null;
         }
     }
-    public void StartMachineSequence(List<Machine> machineList)
+    public void StartMachineSequence()//List<Machine> machineList
     {
-        machines = machineList;
+        //machines = machineList;
         currentMachineIndex = 0;
+        hocaInstruction.text = machines[currentMachineIndex].gameObject.name;
         HighlightCurrentMachine();
     }
 
     public void NextMachine()
     {
         currentMachineIndex++;
-
+        hocaInstruction.text = machines[currentMachineIndex].gameObject.name;
         if (currentMachineIndex < machines.Count)
         {
             HighlightCurrentMachine();

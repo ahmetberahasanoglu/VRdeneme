@@ -18,6 +18,13 @@ public class GameManager : MonoBehaviour
 
     public GameState currentState = GameState.WaitingForPrescription;
 
+    private void Start()
+    {
+        if (currentPrescription != null)
+        {
+            currentPrescription.GenerateRandomValues();
+        }
+    }
     void Awake()
     {
         if (Instance == null)
@@ -35,14 +42,14 @@ public class GameManager : MonoBehaviour
     {
         currentPrescription = prescription;
         currentState = GameState.InProgress;
-        currentPrescription.GenerateRandomValues();
+      //  currentPrescription.GenerateRandomValues();
 
-        Debug.Log("Oyun baþladý. Seçilen reçete: " + prescription.prescriptionName);
+       // Debug.Log("Oyun baþladý. Seçilen reçete: " + prescription.prescriptionName);
 
-        List<Machine> machineList = new List<Machine>(FindObjectsOfType<Machine>());
-        machineList.Sort((a, b) => a.name.CompareTo(b.name));//bu kodu sonra degistirebilirim
+      //  List<Machine> machineList = new List<Machine>(FindObjectsOfType<Machine>());
+      //  machineList.Sort((a, b) => a.name.CompareTo(b.name));//bu kodu sonra degistirebilirim
 
-        MachineManager.Instance.StartMachineSequence(machineList);
+        MachineManager.Instance.StartMachineSequence();
     }
 
     public void FinishGame()

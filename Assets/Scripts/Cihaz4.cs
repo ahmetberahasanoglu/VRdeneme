@@ -69,7 +69,7 @@ public class Cihaz4 : MonoBehaviour
         else
         {
             kesimState.text = "UYARI: Bilgiler Reçete ile eþleþmiyor!";
-            HUDController.instance.DecreaseScore(10);
+           HUDController.instance.DecreaseScore(10);
         }
     }
 

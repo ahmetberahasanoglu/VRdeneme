@@ -9,7 +9,7 @@ public class HUDController : MonoBehaviour
     public static HUDController instance;
  
     [Header("Interaction")]
-    [SerializeField] TMP_Text interactionText;
+  //  [SerializeField] TMP_Text interactionText;
 
     [Header("FokoPanel")]
     [SerializeField] GameObject fokoPanel;
@@ -82,7 +82,7 @@ public class HUDController : MonoBehaviour
         finalScoreText.text = "Notunuz: " + Mathf.Max(score, 0);
         Time.timeScale = 0f; 
     }
-    public void EnableInteractionText(string text)
+  /*  public void EnableInteractionText(string text)
     {
         interactionText.text = text + " (E)";
         interactionText.gameObject.SetActive(true);
@@ -92,7 +92,7 @@ public class HUDController : MonoBehaviour
     {
         interactionText.gameObject.SetActive(false);
     }
-
+  */
     public void ShowfokoPanel()
     {
         Debug.Log("panel goster.");
@@ -243,7 +243,7 @@ public class HUDController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        PlayerMovement.instance.LockControls();
+        PlayerMovement.instance.LockControls();//belki kapatýrým
         MouseLook.instance.LockMouseLooking();
     }
 

@@ -1,6 +1,8 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class fokometre : MonoBehaviour
 {
@@ -32,6 +34,10 @@ public class fokometre : MonoBehaviour
     private float axisInputTimer = 0f;
 
     private Prescription prescription;
+
+    [Header("VR Input")]
+    //public XRController leftController;
+    public float joystickDeadzone = 0.2f;
     private void Awake()
     {
         Instance = this;
@@ -52,12 +58,38 @@ public class fokometre : MonoBehaviour
         {
             axisInputTimer += Time.deltaTime;
             HandleAxisInput();
+           // HandleVRJoystickInput();
             HandleCrosshairDrag();
             CheckMarkingStatus();
             UpdateAxisText();
         }
     }
 
+    /*private void HandleVRJoystickInput()
+    {
+        if (leftController.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 joystickInput))
+        {
+            if (joystickInput.magnitude > joystickDeadzone && axisInputTimer >= axisInputDelay)
+            {
+                if (joystickInput.x < -0.5f) 
+                {
+                    currentAxis--;
+                    if (currentAxis < 0) currentAxis = 180;
+                    axisInputTimer = 0f;
+                }
+                else if (joystickInput.x > 0.5f) 
+                {
+                    currentAxis++;
+                    if (currentAxis > 180) currentAxis = 0;
+                    axisInputTimer = 0f;
+                }
+            }
+        }
+    }
+    private void SendHapticFeedback(float intensity, float duration)
+    {
+        leftController.SendHapticImpulse(intensity, duration);
+    }   */
     private void HandleAxisInput()
     {
         if ((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)) && axisInputTimer >= axisInputDelay)
@@ -77,7 +109,29 @@ public class fokometre : MonoBehaviour
             axisInputTimer = 0f; 
         }
     }
+    public void BeginDrag(Vector3 worldPosition)
+    {
+        isDragging = true;
+        UpdateCrosshairPosition(worldPosition);
+    }
 
+    public void EndDrag()
+    {
+        isDragging = false;
+    }
+
+    public void Dragging(Vector3 worldPosition)
+    {
+        if (isDragging)
+        {
+            UpdateCrosshairPosition(worldPosition);
+        }
+    }
+
+    private void UpdateCrosshairPosition(Vector3 worldPosition)
+    {
+        crosshair.position = new Vector3(worldPosition.x, worldPosition.y, 0);
+    }
     private void HandleCrosshairDrag()
     {
         if (Input.GetMouseButtonDown(0))
@@ -109,7 +163,7 @@ public class fokometre : MonoBehaviour
             if (plane.Raycast(ray, out distance))
             {
                 Vector3 worldPos = ray.GetPoint(distance);
-                crosshair.position = new Vector3(worldPos.x, worldPos.y, crosshair.position.z);
+                crosshair.position = new Vector3(worldPos.x, worldPos.y, 0);
             }
         }
     }

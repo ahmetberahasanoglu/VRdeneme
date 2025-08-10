@@ -66,7 +66,7 @@ public class cihaz3 : MonoBehaviour
             if (!tracerPressed)
             {
                 ShowError("Önce tracer butonuna basýnýz");
-                HUDController.instance.DecreaseScore(5);
+               HUDController.instance.DecreaseScore(5);
                 return;
             }
             OnYatayButtonClicked();
