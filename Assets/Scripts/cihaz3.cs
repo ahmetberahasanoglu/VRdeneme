@@ -260,37 +260,38 @@ public class cihaz3 : MonoBehaviour
 
     private void CheckCorrectPosition()
     {
-        float tolerance = 5f;
-        Vector3 dikeyWorldX = dikeyCizgi.transform.position;
-       Vector3 yatayWorldY = yatayCizgi.transform.position;
-       Vector3 ortaWorld = ortaNokta.transform.position;
+        float tolerance = 0.03f;//0.01
 
-        Vector2 intersection = new Vector2(dikeyWorldX.x, yatayWorldY.y);
-        float distance = Vector2.Distance(intersection, ortaWorld);
+        Vector2 dikeyLocal = ((RectTransform)dikeyCizgi).anchoredPosition;
+        Vector2 yatayLocal = ((RectTransform)yatayCizgi).anchoredPosition;
 
+        Vector2 ortaForLocal = ((RectTransform)yatayNoktalar).anchoredPosition;
 
-        if (distance <= tolerance)
+        bool xDogru = Mathf.Abs(dikeyLocal.x - ortaForLocal.x) <= tolerance;
+        bool yDogru = Mathf.Abs(yatayLocal.y - ortaForLocal.y) <= tolerance;
+
+        if (xDogru && yDogru)
         {
             olcumYapildi = true;
             errorText.text = "Doðru noktadasýn. Sonraki makineye geç!";
         }
         else
         {
-            Debug.Log(intersection + "Intersection");
-            Debug.Log(distance + "Distance");
-            Debug.Log("Orta nokta" + ortaWorld);
-            Debug.LogError("DSADASD");
             olcumYapildi = false;
             errorText.text = "Henüz doðru noktayý bulamadýn.";
-           
         }
+
+        Debug.Log("Dikey pos" + dikeyLocal);
+        Debug.Log("orta pos" + ortaForLocal);
+        Debug.Log($"Dikey fark: {Mathf.Abs(dikeyLocal.x - ortaForLocal.x)} | Yatay fark: {Mathf.Abs(dikeyLocal.y - ortaForLocal.y)}");
+
     }
 
     private void getYatayNoktaPosition()
     {
         if (prescription != null)
         {
-            yatayNoktalar.anchoredPosition = new Vector2(prescription.pd * 3, prescription.plus * 3);//3 4
+            yatayNoktalar.anchoredPosition = new Vector2(prescription.pd * 3, prescription.plus * 30);//3 4
         }
         else
         {

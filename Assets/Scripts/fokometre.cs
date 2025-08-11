@@ -108,6 +108,19 @@ public class fokometre : MonoBehaviour
             UpdateAxisText();
             axisInputTimer = 0f; 
         }
+        
+    }
+    public void arttirAxisButton()
+    {
+        if (currentAxis > 180) currentAxis = 0;
+        currentAxis++;
+        UpdateAxisText();
+    }
+    public void azaltAxisButton()
+    {
+        if (currentAxis < 0) currentAxis = 180;
+        currentAxis--;
+        UpdateAxisText() ;
     }
     public void BeginDrag(Vector3 worldPosition)
     {

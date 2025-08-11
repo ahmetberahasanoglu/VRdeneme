@@ -193,6 +193,10 @@ public class HUDController : MonoBehaviour
             audioSource.PlayOneShot(positiveClip);
             MachineManager.Instance.NextMachine();
         }
+        else
+        {
+           audioSource.PlayOneShot(failClip);
+        }
 
     }
     public void TryHideCihaz4Panel()

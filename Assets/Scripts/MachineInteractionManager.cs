@@ -11,8 +11,8 @@ public class MachineInteractionManager : MonoBehaviour
     public Camera vrCamera;
 
     [Header("Global UI (Fallback)")]
-    public GameObject globalInteractionUI;
-    public TMPro.TextMeshProUGUI globalInteractionText;
+ //   public GameObject globalInteractionUI;
+   // public TMPro.TextMeshProUGUI globalInteractionText;
 
     [Header("Error Display Settings")]
     public float errorDisplayDuration = 3f;
@@ -61,14 +61,14 @@ public class MachineInteractionManager : MonoBehaviour
         else
         {
             // Fallback: Global UI kullan
-            ShowGlobalError(message);
+            //ShowGlobalError(message);
             Debug.LogWarning($"Machine {machine.name} has no MachineErrorPanel component. Using global UI.");
         }
 
         // Ses efekti çal
         AudioManager.Instance.PlaySound(AudioManager.Instance.warningSound, 0.9f);
     }
-
+    /*
     private void ShowGlobalError(string message)
     {
         if (globalInteractionUI != null && globalInteractionText != null)
@@ -86,7 +86,7 @@ public class MachineInteractionManager : MonoBehaviour
         {
             globalInteractionUI.SetActive(false);
         }
-    }
+    }*/
 
     private void PositionPlayerForMachine(Machine machine)
     {
@@ -94,7 +94,7 @@ public class MachineInteractionManager : MonoBehaviour
 
         if (focusPoint && vrPlayer)
         {
-            // VR'da smooth teleportation
+         
             StartCoroutine(SmoothTeleportToPosition(focusPoint.position, focusPoint.rotation));
         }
     }
