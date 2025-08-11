@@ -48,7 +48,10 @@ public class MachineManager : MonoBehaviour
     public void NextMachine()
     {
         currentMachineIndex++;
-        hocaInstruction.text = machines[currentMachineIndex].gameObject.name;
+        if (currentMachineIndex != 5) { 
+            hocaInstruction.text = machines[currentMachineIndex].gameObject.name; 
+        }
+       
         if (currentMachineIndex < machines.Count)
         {
             HighlightCurrentMachine();
