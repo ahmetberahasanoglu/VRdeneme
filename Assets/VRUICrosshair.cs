@@ -7,16 +7,17 @@ public class VRUICrosshair : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        foko.BeginDrag(eventData.pointerCurrentRaycast.worldPosition);
+        foko.OnBeginDrag(eventData);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        foko.EndDrag();
+      
+        foko.OnEndDrag(eventData);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        foko.Dragging(eventData.pointerCurrentRaycast.worldPosition);
+        foko.OnDrag(eventData);
     }
 }

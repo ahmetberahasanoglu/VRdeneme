@@ -42,7 +42,7 @@ public class MachineManager : MonoBehaviour
         //machines = machineList;
         currentMachineIndex = 0;
         hocaInstruction.text = machines[currentMachineIndex].gameObject.name;
-        HighlightCurrentMachine();
+     //   HighlightCurrentMachine();
     }
 
     public void NextMachine()
@@ -54,11 +54,10 @@ public class MachineManager : MonoBehaviour
        
         if (currentMachineIndex < machines.Count)
         {
-            HighlightCurrentMachine();
+          //  HighlightCurrentMachine();
         }
         else
         {
-            Debug.Log("All machines completed!");
             GameManager.Instance.FinishGame();
         }
     }
@@ -75,7 +74,7 @@ public class MachineManager : MonoBehaviour
         }
     }
 
-
+    /*
     public void HighlightCurrentMachine()
     {
         Debug.Log($"Next machine: {machines[currentMachineIndex].machineName}");
@@ -94,7 +93,7 @@ public class MachineManager : MonoBehaviour
             Debug.LogWarning("Makinede 'HighlightPoint' bulunamadý.");
         }
     }
-
+    */
     public bool CanInteractWith(Machine machine)
     {
         return machines[currentMachineIndex] == machine;

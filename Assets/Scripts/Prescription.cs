@@ -31,6 +31,15 @@
         pd = rand.Next(0, 7001) / 100f;
         System.Random rand1 = new System.Random();
         plus = rand1.Next(-800, 801) / 100f;
+        string[] frameTypes = { "Nilör", "Faset", "Optyl", "Kemik", "Metal" };
+        string[] mods = { "Düz", "Eðri", "Oval" };
+        string[] odaklamalar = { "Pasif", "Aktif" };
+        frameType = frameTypes[Random.Range(0, frameTypes.Length)];
+        mod = mods[Random.Range(0, mods.Length)];
+        odaklama = odaklamalar[Random.Range(0, odaklamalar.Length)];
+        polisaj = Random.value > 0.5f;
+        capak = Random.value > 0.5f;
+        leftRight = Random.value > 0.5f;
 
 
     }

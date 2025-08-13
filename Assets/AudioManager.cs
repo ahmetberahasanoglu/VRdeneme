@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip waterSound;
     public AudioClip glassCutSound;
     public AudioClip stickSound;
+    public AudioClip examMusic;
     private AudioSource audioSource;
 
     private void Awake()

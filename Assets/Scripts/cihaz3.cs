@@ -75,7 +75,7 @@ public class cihaz3 : MonoBehaviour
             if (!tracerPressed)
             {
                 ShowError("Önce tracer butonuna basýnýz");
-                HUDController.instance.DecreaseScore(5);
+                HUDController.instance.DecreaseScore(10);
                 return;
             }
             ShowNumpadForDikey();
@@ -86,7 +86,7 @@ public class cihaz3 : MonoBehaviour
             if (!tracerPressed)
             {
                 ShowError("Önce tracer butonuna basýnýz");
-                HUDController.instance.DecreaseScore(5);
+                HUDController.instance.DecreaseScore(10);
                 return;
             }
             ShowNumpadForYatay();
@@ -260,7 +260,7 @@ public class cihaz3 : MonoBehaviour
 
     private void CheckCorrectPosition()
     {
-        float tolerance = 0.03f;//0.01
+        float tolerance = 5f;
 
         Vector2 dikeyLocal = ((RectTransform)dikeyCizgi).anchoredPosition;
         Vector2 yatayLocal = ((RectTransform)yatayCizgi).anchoredPosition;

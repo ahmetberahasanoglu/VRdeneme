@@ -3,10 +3,14 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.EventSystems;
+using System.Collections.Generic;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
-public class fokometre : MonoBehaviour
+public class fokometre : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public static fokometre Instance;
+
     [Header("UI References")]
     public TMP_Text sphereText;
     public TMP_Text cylinderText;
@@ -14,6 +18,20 @@ public class fokometre : MonoBehaviour
     public TMP_Text markingStatusText;
     public RectTransform crosshair;
     public RectTransform targetCenter;
+
+    [Header("Crosshair Constraints")]
+    public float crosshairMinX = -150f;
+    public float crosshairMaxX = 150f;
+    public float crosshairMinY = -150f;
+    public float crosshairMaxY = 150f;
+
+    [Header("VR Input References")]
+    public XRRayInteractor rightHandRayInteractor;
+    public XRRayInteractor leftHandRayInteractor;
+
+    [Header("VR Settings")]
+    public float crosshairSensitivity = 100f;
+    public bool useVRMode = true;
 
     [Header("Target Prescription Values")]
     [SerializeField] private float targetSphere;
@@ -30,18 +48,24 @@ public class fokometre : MonoBehaviour
     private bool isCrosshairCentered = false;
 
     private bool isDragging = false;
-    private float axisInputDelay = 0.1f; 
+    private float axisInputDelay = 0.1f;
     private float axisInputTimer = 0f;
 
-    private Prescription prescription;
+    // VR Input Actions
+    private InputDevice rightHandDevice;
+    private InputDevice leftHandDevice;
+    private bool wasRightTriggerPressed = false;
+    private bool wasLeftTriggerPressed = false;
 
-    [Header("VR Input")]
-    //public XRController leftController;
-    public float joystickDeadzone = 0.2f;
+    private Prescription prescription;
+    private Canvas parentCanvas;
+
     private void Awake()
     {
         Instance = this;
+        parentCanvas = GetComponentInParent<Canvas>();
     }
+
     private void Start()
     {
         if (GameManager.Instance.currentPrescription != null)
@@ -50,6 +74,8 @@ public class fokometre : MonoBehaviour
             Debug.LogError("Prescription null!");
 
         RandomizeCrosshairPosition();
+        DetectVRMode();
+        InitializeVRInput();
     }
 
     private void Update()
@@ -57,39 +83,185 @@ public class fokometre : MonoBehaviour
         if (this.gameObject.activeInHierarchy)
         {
             axisInputTimer += Time.deltaTime;
-            HandleAxisInput();
-           // HandleVRJoystickInput();
-            HandleCrosshairDrag();
+
+            if (useVRMode)
+            {
+                HandleVRInput();
+            }
+            else
+            {
+                HandlePCInput();
+            }
+
             CheckMarkingStatus();
-            UpdateAxisText();
         }
     }
 
-    /*private void HandleVRJoystickInput()
+    private void DetectVRMode()
     {
-        if (leftController.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 joystickInput))
+        useVRMode = XRSettings.isDeviceActive;
+        Debug.Log($"VR Mode: {useVRMode}");
+    }
+
+    private void InitializeVRInput()
+    {
+        if (useVRMode)
         {
-            if (joystickInput.magnitude > joystickDeadzone && axisInputTimer >= axisInputDelay)
+            // Get VR input devices
+            var rightHandDevices = new List<InputDevice>();
+            var leftHandDevices = new List<InputDevice>();
+
+            InputDevices.GetDevicesAtXRNode(XRNode.RightHand, rightHandDevices);
+            InputDevices.GetDevicesAtXRNode(XRNode.LeftHand, leftHandDevices);
+
+            if (rightHandDevices.Count > 0)
+                rightHandDevice = rightHandDevices[0];
+
+            if (leftHandDevices.Count > 0)
+                leftHandDevice = leftHandDevices[0];
+        }
+    }
+
+    #region VR Input Handling
+
+    private void HandleVRInput()
+    {
+        HandleVRAxisInput();
+        HandleVRTriggerInput();
+    }
+
+    private void HandleVRAxisInput()
+    {
+        // Sol el ile axis kontrolü
+        if (leftHandDevice.isValid)
+        {
+            // Primary2DAxis (joystick) ile axis kontrolü
+            if (leftHandDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 leftJoystick))
             {
-                if (joystickInput.x < -0.5f) 
+                if (Mathf.Abs(leftJoystick.x) > 0.3f && axisInputTimer >= axisInputDelay)
                 {
-                    currentAxis--;
-                    if (currentAxis < 0) currentAxis = 180;
-                    axisInputTimer = 0f;
-                }
-                else if (joystickInput.x > 0.5f) 
-                {
-                    currentAxis++;
-                    if (currentAxis > 180) currentAxis = 0;
-                    axisInputTimer = 0f;
+                    if (leftJoystick.x < -0.3f)
+                    {
+                        currentAxis--;
+                        if (currentAxis < 0) currentAxis = 180;
+                        axisInputTimer = 0f;
+                        SendHapticFeedback(leftHandDevice, 0.2f, 0.1f);
+                        UpdateAxisText();
+                    }
+                    else if (leftJoystick.x > 0.3f)
+                    {
+                        currentAxis++;
+                        if (currentAxis > 180) currentAxis = 0;
+                        axisInputTimer = 0f;
+                        SendHapticFeedback(leftHandDevice, 0.2f, 0.1f);
+                        UpdateAxisText();
+                    }
                 }
             }
         }
     }
-    private void SendHapticFeedback(float intensity, float duration)
+
+    private void HandleVRTriggerInput()
     {
-        leftController.SendHapticImpulse(intensity, duration);
-    }   */
+        // Sað el trigger ile crosshair drag
+        if (rightHandDevice.isValid)
+        {
+            if (rightHandDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool rightTriggerPressed))
+            {
+                // Trigger baþlangýcý - drag baþlat
+                if (rightTriggerPressed && !wasRightTriggerPressed)
+                {
+                    OnVRDragStart();
+                }
+                // Trigger býrakma - drag bitir
+                else if (!rightTriggerPressed && wasRightTriggerPressed)
+                {
+                    OnVRDragEnd();
+                }
+                // Trigger basýlý - drag devam
+                else if (rightTriggerPressed && isDragging)
+                {
+                    OnVRDrag();
+                }
+
+                wasRightTriggerPressed = rightTriggerPressed;
+            }
+        }
+
+        // Sol el trigger ile sphere/cylinder confirm
+        if (leftHandDevice.isValid)
+        {
+            if (leftHandDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool leftTriggerPressed))
+            {
+                if (leftTriggerPressed && !wasLeftTriggerPressed && !sphereSet)
+                {
+                    ConfirmSphereCylinder();
+                    SendHapticFeedback(leftHandDevice, 0.4f, 0.15f);
+                }
+
+                wasLeftTriggerPressed = leftTriggerPressed;
+            }
+        }
+    }
+
+    private void OnVRDragStart()
+    {
+        isDragging = true;
+        SendHapticFeedback(rightHandDevice, 0.3f, 0.1f);
+        Debug.Log("VR Drag Started");
+    }
+
+    private void OnVRDrag()
+    {
+        if (rightHandRayInteractor != null && rightHandRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+        {
+            // Ray hit pozisyonunu UI space'e çevir
+            Vector2 screenPoint = Camera.main.WorldToScreenPoint(hit.point);
+
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                crosshair.parent as RectTransform,
+                screenPoint,
+                parentCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main,
+                out Vector2 localPoint))
+            {
+                Vector2 clampedPos = ClampCrosshairPosition(localPoint);
+                crosshair.anchoredPosition = clampedPos;
+
+                // Hafif haptic feedback
+                SendHapticFeedback(rightHandDevice, 0.05f, 0.02f);
+            }
+        }
+    }
+
+    private void OnVRDragEnd()
+    {
+        isDragging = false;
+        SendHapticFeedback(rightHandDevice, 0.2f, 0.08f);
+        Debug.Log("VR Drag Ended");
+    }
+
+    private void SendHapticFeedback(InputDevice device, float intensity, float duration)
+    {
+        if (device.isValid)
+        {
+            HapticCapabilities capabilities;
+            if (device.TryGetHapticCapabilities(out capabilities) && capabilities.supportsImpulse)
+            {
+                device.SendHapticImpulse(0, intensity, duration);
+            }
+        }
+    }
+
+    #endregion
+
+    #region PC Input Handling & UI Event System
+
+    private void HandlePCInput()
+    {
+        HandleAxisInput();
+        HandleCrosshairDrag();
+    }
+
     private void HandleAxisInput()
     {
         if ((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)) && axisInputTimer >= axisInputDelay)
@@ -105,56 +277,24 @@ public class fokometre : MonoBehaviour
                 if (currentAxis > 180) currentAxis = 0;
             }
 
+            axisInputTimer = 0f;
             UpdateAxisText();
-            axisInputTimer = 0f; 
-        }
-        
-    }
-    public void arttirAxisButton()
-    {
-        if (currentAxis > 180) currentAxis = 0;
-        currentAxis++;
-        UpdateAxisText();
-    }
-    public void azaltAxisButton()
-    {
-        if (currentAxis < 0) currentAxis = 180;
-        currentAxis--;
-        UpdateAxisText() ;
-    }
-    public void BeginDrag(Vector3 worldPosition)
-    {
-        isDragging = true;
-        UpdateCrosshairPosition(worldPosition);
-    }
-
-    public void EndDrag()
-    {
-        isDragging = false;
-    }
-
-    public void Dragging(Vector3 worldPosition)
-    {
-        if (isDragging)
-        {
-            UpdateCrosshairPosition(worldPosition);
         }
     }
 
-    private void UpdateCrosshairPosition(Vector3 worldPosition)
-    {
-        crosshair.position = new Vector3(worldPosition.x, worldPosition.y, 0);
-    }
     private void HandleCrosshairDrag()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Mouse tiklandi");
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            Vector2 localMousePosition;
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                crosshair.parent as RectTransform,
+                Input.mousePosition,
+                parentCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main,
+                out localMousePosition))
             {
-                if (hit.transform == crosshair.transform)
+                if (RectTransformUtility.RectangleContainsScreenPoint(crosshair, Input.mousePosition,
+                    parentCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main))
                 {
                     isDragging = true;
                 }
@@ -163,32 +303,105 @@ public class fokometre : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            Debug.Log("Mouse birakildi");
             isDragging = false;
         }
 
         if (isDragging)
         {
-            Debug.Log("surukluoz");
-            Plane plane = new Plane(Vector3.forward, crosshair.position); 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            float distance;
-            if (plane.Raycast(ray, out distance))
+            Vector2 localMousePosition;
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                crosshair.parent as RectTransform,
+                Input.mousePosition,
+                parentCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main,
+                out localMousePosition))
             {
-                Vector3 worldPos = ray.GetPoint(distance);
-                crosshair.position = new Vector3(worldPos.x, worldPos.y, 0);
+                Vector2 clampedPosition = ClampCrosshairPosition(localMousePosition);
+                crosshair.anchoredPosition = clampedPosition;
             }
         }
     }
+
+    // Unity Event System interface implementations (UI drag için)
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        isDragging = true;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (isDragging)
+        {
+            Vector2 localPoint;
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                crosshair.parent as RectTransform,
+                eventData.position,
+                eventData.pressEventCamera,
+                out localPoint))
+            {
+                Vector2 clampedPos = ClampCrosshairPosition(localPoint);
+                crosshair.anchoredPosition = clampedPos;
+            }
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        isDragging = false;
+    }
+
+    #endregion
+
+    #region Utility Methods
+
+    private Vector2 ClampCrosshairPosition(Vector2 position)
+    {
+        float clampedX = Mathf.Clamp(position.x, crosshairMinX, crosshairMaxX);
+        float clampedY = Mathf.Clamp(position.y, crosshairMinY, crosshairMaxY);
+        return new Vector2(clampedX, clampedY);
+    }
+
+    public void arttirAxisButton()
+    {
+        currentAxis++;
+        if (currentAxis > 180) currentAxis = 0;
+        UpdateAxisText();
+
+        if (useVRMode && rightHandDevice.isValid)
+        {
+            SendHapticFeedback(rightHandDevice, 0.2f, 0.1f);
+        }
+    }
+
+    public void azaltAxisButton()
+    {
+        currentAxis--;
+        if (currentAxis < 0) currentAxis = 180;
+        UpdateAxisText();
+
+        if (useVRMode && rightHandDevice.isValid)
+        {
+            SendHapticFeedback(rightHandDevice, 0.2f, 0.1f);
+        }
+    }
+
+    private void UpdateAxisText()
+    {
+        axisText.text = "Axis: " + currentAxis.ToString();
+    }
+
+    #endregion
+
+    #region Game Logic
+
     public bool IsAllConditionsMet()
     {
         return sphereSet && cylinderSet && markingOK && isCrosshairCentered;
     }
+
     private void CheckMarkingStatus()
     {
         if (currentAxis == prescription.axis)
         {
-
             markingOK = true;
         }
         else
@@ -204,17 +417,16 @@ public class fokometre : MonoBehaviour
     private void CheckCrosshairCentered()
     {
         float distance = Vector2.Distance(crosshair.anchoredPosition, targetCenter.anchoredPosition);
-        isCrosshairCentered = distance < 10f; 
+        isCrosshairCentered = distance < 10f;
     }
 
     private void CheckIfTaskCompleted()
     {
-        
         if (sphereSet && cylinderSet && markingOK && isCrosshairCentered)
         {
             markingStatusText.text = "Marking OK";
         }
-        else if (sphereSet && cylinderSet &&markingOK)
+        else if (sphereSet && cylinderSet && markingOK)
         {
             markingStatusText.text = "Need Alignment";
         }
@@ -226,11 +438,10 @@ public class fokometre : MonoBehaviour
         {
             markingStatusText.text = "Axis OK";
         }
-        else if(markingOK&& isCrosshairCentered)
+        else if (markingOK && isCrosshairCentered)
         {
             markingStatusText.text = "Press +- Button";
         }
-       
         else
         {
             markingStatusText.text = "Adjusting...";
@@ -246,6 +457,7 @@ public class fokometre : MonoBehaviour
         cylinderSet = true;
 
         UpdateSphereCylinderText();
+        Debug.Log("Sphere/Cylinder confirmed!");
     }
 
     private void UpdateSphereCylinderText()
@@ -254,17 +466,12 @@ public class fokometre : MonoBehaviour
         cylinderText.text = currentCylinder.ToString("F2");
     }
 
-    private void UpdateAxisText()
-    {
-        axisText.text = "Axis: " + currentAxis.ToString();
-    }
-
- 
-
     private void RandomizeCrosshairPosition()
     {
-        float x = Random.Range(-150f, 150f);
-        float y = Random.Range(-150f, 150f);
+        float x = Random.Range(crosshairMinX, crosshairMaxX);
+        float y = Random.Range(crosshairMinY, crosshairMaxY);
         crosshair.anchoredPosition = new Vector2(x, y);
     }
+
+    #endregion
 }

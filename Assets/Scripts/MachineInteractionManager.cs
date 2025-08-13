@@ -44,8 +44,8 @@ public class MachineInteractionManager : MonoBehaviour
             return;
         }
 
-        // VR'da player teleportation yerine pozisyon ayarlama
-        PositionPlayerForMachine(machine);
+       
+       // PositionPlayerForMachine(machine);
         machine.Interact();
     }
 
@@ -86,8 +86,8 @@ public class MachineInteractionManager : MonoBehaviour
         {
             globalInteractionUI.SetActive(false);
         }
-    }*/
-
+    }
+    
     private void PositionPlayerForMachine(Machine machine)
     {
         Transform focusPoint = machine.transform.Find("FocusPoint");
@@ -98,8 +98,8 @@ public class MachineInteractionManager : MonoBehaviour
             StartCoroutine(SmoothTeleportToPosition(focusPoint.position, focusPoint.rotation));
         }
     }
-
-    
+    */
+    /*
     private IEnumerator SmoothTeleportToPosition(Vector3 targetPosition, Quaternion targetRotation)
     {
         Vector3 startPosition = vrPlayer.position;
@@ -123,7 +123,7 @@ public class MachineInteractionManager : MonoBehaviour
         vrPlayer.rotation = targetRotation;
     }
 
-
+    */
 
 
 }

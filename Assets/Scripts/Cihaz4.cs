@@ -16,6 +16,7 @@ public class Cihaz4 : MonoBehaviour
     public TextMeshProUGUI dikeyCizgiDeger;
     public TextMeshProUGUI yatayCizgiDeger;
     public TextMeshProUGUI yatayCizgiDeger2;
+    public TextMeshProUGUI hintText;
     public TMP_Dropdown Cam;
     public TMP_Dropdown Cerceve;
     public TMP_Dropdown Mod;
@@ -37,7 +38,12 @@ public class Cihaz4 : MonoBehaviour
     {
         modelCagir.gameObject.SetActive(true);
 
-     
+        hintText.text = $"Ýpucu: Cam: {prescription.cam}\n" +
+                                $"Çerçeve: {prescription.frameType}\n"+
+                                $"Mod: {prescription.mod}\n"+
+                               $"Polisaj: {(prescription.polisaj ? "Evet" : "Hayýr")}\n" +
+                                $"Çapak: {(prescription.capak ? "Evet" : "Hayýr")}\n"+
+                                $"Odaklama: {prescription.odaklama}\n";
         dikeyCizgiDeger.text = prescription.pd.ToString();
         yatayCizgiDeger.text = ((prescription.plus)/7).ToString();
         yatayCizgiDeger2.text = ((prescription.plus) / 7).ToString();
