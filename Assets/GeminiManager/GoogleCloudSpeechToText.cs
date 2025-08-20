@@ -26,7 +26,7 @@ namespace GoogleSpeechToText.Scripts
                 {
                     encoding = "LINEAR16",
                     // sampleRateHertz = 16000,
-                    languageCode = "en-US",
+                    languageCode = "tr-TR",
                     enableWordTimeOffsets = false
                 },
                 audio = new AudioData

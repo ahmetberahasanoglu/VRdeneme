@@ -57,10 +57,28 @@ public class UnityAndGeminiV3: MonoBehaviour
     [Header("NPC Function")]
     [SerializeField] private TextToSpeechManager googleServices;
     private Content[] chatHistory;
+    private Coroutine typingCoroutine;
 
     void Start()
     {
-        chatHistory = new Content[] { };
+        chatHistory = new Content[]
+      {
+            new Content
+            {
+                role = "user",
+                parts = new Part[]
+                {
+                    new Part
+                    {
+                        text = "Sen bir optisyenlik laboratuvarýndaki Mehmet adýndaki öðretmen rolündesin. " +
+        "Görevin öðrencilerin reçeteye uygun þekilde gözlük yapmalarýný öðretmek. " +
+        "Laboratuvarda þu cihazlar var: Fokometre, Merkezleme cihazý, Çerçeve izleyici, Cam kesici ve Isýtýcý. " +
+        "Sorulara kýsa ve anlaþýlýr cevap ver. Ýnsan gibi konuþ, listeleme veya madde iþaretleri kullanma. " +
+        "Ýlgisiz bir soru sorulursa sadece 'Bu konu laboratuvar çalýþmamýzla ilgili deðil.' de."
+                    }
+                }
+            }
+      };
     }
 
     // Functions for sending a new prompt, or a chat to Gemini
@@ -161,13 +179,12 @@ public class UnityAndGeminiV3: MonoBehaviour
                    
                   
                     googleServices.SendTextToGoogle(reply);
-
-                    text.text = ""; // Baþta metni boþalt
-                    foreach (char c in reply)
+                    if (typingCoroutine != null)
                     {
-                        text.text += c;
-                        yield return new WaitForSeconds(delay);
+                        StopCoroutine(typingCoroutine);
                     }
+                    typingCoroutine = StartCoroutine(TypeReply(reply));
+                   
                     //This part shows the text in the Canvas
                     // uiText.text = reply;
                     //This part adds the response to the chat history, for your next message
@@ -182,6 +199,16 @@ public class UnityAndGeminiV3: MonoBehaviour
              }
         }  
     }
+    private IEnumerator TypeReply(string reply)
+    {
+        text.text = "";
+        foreach (char c in reply)
+        {
+            text.text += c;
+            yield return new WaitForSeconds(delay);
+        }
+    }
+
 
 
 }

@@ -16,8 +16,35 @@ namespace GoogleSpeechToText.Scripts
         private AudioClip clip;
         private byte[] bytes;
         private bool recording = false;
+        private float maxRecordingTime = 10f;
+        private Coroutine recordingCoroutine;
 
-    void Update()
+        public void OnMicButtonPressed()
+        {
+            if (!recording)
+            {
+                StartRecording();
+               
+                recordingCoroutine = StartCoroutine(StopRecordingAfterDelay(maxRecordingTime));
+            }
+            else
+            {
+                StopRecording();
+                if (recordingCoroutine != null)
+                {
+                    StopCoroutine(recordingCoroutine);
+                    recordingCoroutine = null;
+                }
+            }
+        }
+
+        private IEnumerator StopRecordingAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            if (recording)
+                StopRecording();
+        }
+        void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && !recording)
         {
@@ -65,10 +92,11 @@ namespace GoogleSpeechToText.Scripts
         }
     }
 
-    private void StopRecording()
-    {
+        private void StopRecording()
+        {
             var position = Microphone.GetPosition(null);
             Microphone.End(null);
+
             var samples = new float[position * clip.channels];
             clip.GetData(samples, 0);
             bytes = EncodeAsWAV(samples, clip.frequency, clip.channels);
@@ -77,17 +105,30 @@ namespace GoogleSpeechToText.Scripts
             GoogleCloudSpeechToText.SendSpeechToTextRequest(bytes, apiKey,
                 (response) => {
                     Debug.Log("Speech-to-Text Response: " + response);
-                    // Parse the response if needed
-                    var speechResponse = JsonUtility.FromJson<SpeechToTextResponse>(response);
-                    var transcript = speechResponse.results[0].alternatives[0].transcript;
-                    Debug.Log("Soyledigimiz sey: " + transcript);
-                    geminiManager.SendChat(transcript);
 
+             
+                    var speechResponse = JsonUtility.FromJson<SpeechToTextResponse>(response);
+
+                    if (speechResponse != null &&
+                        speechResponse.results != null &&
+                        speechResponse.results.Length > 0 &&
+                        speechResponse.results[0].alternatives != null &&
+                        speechResponse.results[0].alternatives.Length > 0)
+                    {
+                        var transcript = speechResponse.results[0].alternatives[0].transcript;
+                        Debug.Log("Söylediðimiz þey: " + transcript);
+
+                        geminiManager.SendChat(transcript);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Speech-to-Text: Geçerli bir metin bulunamadý.");
+                    }
                 },
                 (error) => {
                     Debug.LogError("Error: " + error.error.message);
                 });
-    }
+        }
 
     }
 }
