@@ -9,7 +9,7 @@ public class Machine : MonoBehaviour
     {
         Debug.Log($"{machineName} interacted.");
        // CompleteMachine();
-        //MachineInteractionManager.Instance.UnlockPlayerMovement();
+       // MachineInteractionManager.Instance.UnlockPlayerMovement();
     }
 
     public void CompleteMachine()

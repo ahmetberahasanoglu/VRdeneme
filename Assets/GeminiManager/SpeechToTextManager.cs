@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using TMPro;
+using UnityEngine.UI;
 
 namespace GoogleSpeechToText.Scripts
 {
@@ -18,7 +20,10 @@ namespace GoogleSpeechToText.Scripts
         private bool recording = false;
         private float maxRecordingTime = 10f;
         private Coroutine recordingCoroutine;
-
+        public Button micButton; 
+        public TextMeshProUGUI buttonText;
+        public Color idleColor = Color.green;   
+        public Color recordingColor = Color.red;
         public void OnMicButtonPressed()
         {
             if (!recording)
@@ -36,13 +41,23 @@ namespace GoogleSpeechToText.Scripts
                     recordingCoroutine = null;
                 }
             }
+            UpdateButtonText();
         }
-
+        void UpdateButtonText()
+        {
+            buttonText.text = recording ? "Sorun bittiginde, tekrar bas" : "Soru Sor";
+            ColorBlock colors = micButton.colors;
+            colors.normalColor = recording ? recordingColor : idleColor;
+            colors.highlightedColor = recording ? recordingColor : idleColor;
+            micButton.colors = colors;
+        }
         private IEnumerator StopRecordingAfterDelay(float delay)
         {
             yield return new WaitForSeconds(delay);
-            if (recording)
-                StopRecording();
+            if (recording) { 
+            StopRecording();
+            UpdateButtonText();
+        }
         }
         void Update()
     {

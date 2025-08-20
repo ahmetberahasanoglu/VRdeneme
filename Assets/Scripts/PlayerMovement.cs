@@ -42,17 +42,21 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
     }
 
-    public void LockControls()
-    {
-        isLocked = true;
-        controller.enabled = false;
-    }
-    
-    public void UnlockControls()
-    {
-        isLocked = false;
-        controller.enabled = true;
-    }
+    /*  public void LockControls()
+      {
+          isLocked = true;
+          controller.enabled = false;
+          //Cursor.lockState = CursorLockMode.None;
+        //  Cursor.visible = true;
+      }
+
+      public void UnlockControls()
+      {
+          isLocked = false;
+          controller.enabled = true;
+
+
+      } */
 
     private void OnTriggerEnter(Collider other)
     {
