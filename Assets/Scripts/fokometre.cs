@@ -215,7 +215,7 @@ public class fokometre : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         if (rightHandRayInteractor != null && rightHandRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
         {
-            // Ray hit pozisyonunu UI space'e çevir
+            
             Vector2 screenPoint = Camera.main.WorldToScreenPoint(hit.point);
 
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -227,7 +227,7 @@ public class fokometre : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
                 Vector2 clampedPos = ClampCrosshairPosition(localPoint);
                 crosshair.anchoredPosition = clampedPos;
 
-                // Hafif haptic feedback
+                
                 SendHapticFeedback(rightHandDevice, 0.05f, 0.02f);
             }
         }

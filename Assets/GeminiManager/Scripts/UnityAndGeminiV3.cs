@@ -149,7 +149,7 @@ public class UnityAndGeminiV3: MonoBehaviour
 
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(jsonData);
 
-        // Create a UnityWebRequest with the JSON data
+ 
         using (UnityWebRequest www = new UnityWebRequest(url, "POST")){
             www.uploadHandler = new UploadHandlerRaw(jsonToSend);
             www.downloadHandler = new DownloadHandlerBuffer();
@@ -164,7 +164,7 @@ public class UnityAndGeminiV3: MonoBehaviour
                 Response response = JsonUtility.FromJson<Response>(www.downloadHandler.text);
                 if (response.candidates.Length > 0 && response.candidates[0].content.parts.Length > 0)
                     {
-                        //This is the response to your request
+                     
                         string reply = response.candidates[0].content.parts[0].text;
                         Content botContent = new Content
                         {
@@ -185,9 +185,9 @@ public class UnityAndGeminiV3: MonoBehaviour
                     }
                     typingCoroutine = StartCoroutine(TypeReply(reply));
                    
-                    //This part shows the text in the Canvas
+                    
                     // uiText.text = reply;
-                    //This part adds the response to the chat history, for your next message
+             
                     contentsList.Add(botContent);
                         chatHistory = contentsList.ToArray();
                       

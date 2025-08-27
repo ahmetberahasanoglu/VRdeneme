@@ -192,7 +192,7 @@ public class cihaz3 : MonoBehaviour
         }
         else if (currentInput == "-")
         {
-            // Eðer sadece - varsa kaldýr
+            
             currentInput = "";
         }
         else if (currentInput.StartsWith("-"))
@@ -202,7 +202,7 @@ public class cihaz3 : MonoBehaviour
         }
         else
         {
-            // Eðer - yoksa baþa ekle
+           
             currentInput = "-" + currentInput;
         }
 
