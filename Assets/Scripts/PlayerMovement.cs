@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
     }
 
-    /*  public void LockControls()
+    /* public void LockControls()
       {
           isLocked = true;
           controller.enabled = false;

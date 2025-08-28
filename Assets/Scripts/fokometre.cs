@@ -100,23 +100,18 @@ public class fokometre : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     private void DetectVRMode()
     {
         useVRMode = XRSettings.isDeviceActive;
-        Debug.Log($"VR Mode: {useVRMode}");
     }
 
     private void InitializeVRInput()
     {
         if (useVRMode)
         {
-            // Get VR input devices
             var rightHandDevices = new List<InputDevice>();
             var leftHandDevices = new List<InputDevice>();
-
             InputDevices.GetDevicesAtXRNode(XRNode.RightHand, rightHandDevices);
             InputDevices.GetDevicesAtXRNode(XRNode.LeftHand, leftHandDevices);
-
             if (rightHandDevices.Count > 0)
                 rightHandDevice = rightHandDevices[0];
-
             if (leftHandDevices.Count > 0)
                 leftHandDevice = leftHandDevices[0];
         }
@@ -162,23 +157,19 @@ public class fokometre : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     }
 
     private void HandleVRTriggerInput()
-    {
-        // Sað el trigger ile crosshair drag
+    { 
         if (rightHandDevice.isValid)
         {
             if (rightHandDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool rightTriggerPressed))
             {
-                // Trigger baþlangýcý - drag baþlat
                 if (rightTriggerPressed && !wasRightTriggerPressed)
                 {
                     OnVRDragStart();
                 }
-                // Trigger býrakma - drag bitir
                 else if (!rightTriggerPressed && wasRightTriggerPressed)
                 {
                     OnVRDragEnd();
                 }
-                // Trigger basýlý - drag devam
                 else if (rightTriggerPressed && isDragging)
                 {
                     OnVRDrag();
@@ -187,8 +178,6 @@ public class fokometre : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
                 wasRightTriggerPressed = rightTriggerPressed;
             }
         }
-
-        // Sol el trigger ile sphere/cylinder confirm
         if (leftHandDevice.isValid)
         {
             if (leftHandDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool leftTriggerPressed))
