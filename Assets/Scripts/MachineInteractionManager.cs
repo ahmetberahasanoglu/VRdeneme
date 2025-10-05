@@ -14,7 +14,7 @@ public class MachineInteractionManager : MonoBehaviour
  //   public GameObject globalInteractionUI;
    // public TMPro.TextMeshProUGUI globalInteractionText;
 
-    [Header("Error Display Settings")]
+    [Header("Error Görünümü")]
     public float errorDisplayDuration = 3f;
     public AnimationCurve fadeInCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     public AnimationCurve fadeOutCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
@@ -22,8 +22,6 @@ public class MachineInteractionManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-
-        // VR kamerası yoksa bulun
         if (vrCamera == null)
         {
             vrCamera = FindObjectOfType<Camera>();
@@ -60,12 +58,11 @@ public class MachineInteractionManager : MonoBehaviour
         }
         else
         {
-            // Fallback: Global UI kullan
-            //ShowGlobalError(message);
-            Debug.LogWarning($"Machine {machine.name} has no MachineErrorPanel component. Using global UI.");
+           
+           //bir ara bir şey yazıcam
         }
 
-        // Ses efekti çal
+    
         AudioManager.Instance.PlaySound(AudioManager.Instance.warningSound, 0.9f);
     }
     /*

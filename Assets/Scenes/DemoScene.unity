@@ -10926,7 +10926,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &356269970
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12126,6 +12126,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 3922177026488651056, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3922177026488651056, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
       propertyPath: m_HandMeshMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 2c5565a5a153f1c4980f38a5138a08e8, type: 2}
@@ -12136,6 +12140,10 @@ PrefabInstance:
     - target: {fileID: 6468442521412095314, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7847385525345954920, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
+      propertyPath: m_TurnAmount
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17557,7 +17565,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &620537358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25842,7 +25850,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8225168873297112583, guid: 08ee4c811cfe44445b6206d8638b0d72, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8225168873297112583, guid: 08ee4c811cfe44445b6206d8638b0d72, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -31376,7 +31384,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1080989342
 RectTransform:
   m_ObjectHideFlags: 0
@@ -35944,7 +35952,7 @@ PrefabInstance:
       objectReference: {fileID: 333582151}
     - target: {fileID: 6015506993103287062, guid: a66bfde88dbe0e846b45bc643b3e6124, type: 3}
       propertyPath: apiKey
-      value: AIzaSyCBnmgi2M6HJ1LfmWTDkOOnv6Y6xhiFJHo
+      value: AIzaSyBjd77-JaVP9ciNcm4zKLiFSLC8QwZMTEU
       objectReference: {fileID: 0}
     - target: {fileID: 6015506993103287062, guid: a66bfde88dbe0e846b45bc643b3e6124, type: 3}
       propertyPath: initialPrompt
@@ -39206,7 +39214,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 1, g: 0, b: 0, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.72566676, b: 0, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -39706,7 +39714,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Ba\u015Far\u0131l\u0131"
+  m_text: Notunuz:80
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d1c2b76c3e8864a4080d1bd59e015a51, type: 2}
   m_sharedMaterial: {fileID: 6590433812869624810, guid: d1c2b76c3e8864a4080d1bd59e015a51, type: 2}
@@ -40267,7 +40275,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: sonuc
+  m_text: "Ge\xE7en S\xFCre:110s\nHata say\u0131s\u0131:30\n<color=green>Ge\xE7tiniz</color>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d1c2b76c3e8864a4080d1bd59e015a51, type: 2}
   m_sharedMaterial: {fileID: 6590433812869624810, guid: d1c2b76c3e8864a4080d1bd59e015a51, type: 2}
@@ -54526,7 +54534,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1912026408
 RectTransform:
   m_ObjectHideFlags: 0
@@ -55146,7 +55154,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 5:00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d1c2b76c3e8864a4080d1bd59e015a51, type: 2}
   m_sharedMaterial: {fileID: 6590433812869624810, guid: d1c2b76c3e8864a4080d1bd59e015a51, type: 2}
@@ -59382,7 +59390,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2058194916
 RectTransform:
   m_ObjectHideFlags: 0
@@ -75410,7 +75418,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &919132148772399595
 GameObject:
   m_ObjectHideFlags: 0

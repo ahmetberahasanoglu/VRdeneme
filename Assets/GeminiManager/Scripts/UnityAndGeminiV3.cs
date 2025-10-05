@@ -49,8 +49,8 @@ public class Part
 public class UnityAndGeminiV3: MonoBehaviour
 {
     [Header("Gemini API Password")]
-    public string apiKey; 
-    private string apiEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent"; // Edit it and choose your prefer model
+    public string apiKey;
+    private string apiEndpoint = "https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent";
     public TextMeshProUGUI text;
     public float delay = 0.05f;
 
@@ -81,12 +81,11 @@ public class UnityAndGeminiV3: MonoBehaviour
       };
     }
 
-    // Functions for sending a new prompt, or a chat to Gemini
     private IEnumerator SendPromptRequestToGemini(string promptText)
     {
         string url = $"{apiEndpoint}?key={apiKey}";
-     
-        string jsonData = "{\"contents\": [{\"parts\": [{\"text\": \"{" + promptText + "}\"}]}]}";
+
+        string jsonData = "{\"contents\": [{\"parts\": [{\"text\": \"" + promptText + "\"}]}]}";
 
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(jsonData);
 
@@ -121,6 +120,7 @@ public class UnityAndGeminiV3: MonoBehaviour
     {
         // string userMessage = inputField.text;
         StartCoroutine( SendChatRequestToGemini(userMessage));
+        Debug.Log("Geminiye gonderildi");
      
     }
 
@@ -129,7 +129,7 @@ public class UnityAndGeminiV3: MonoBehaviour
     {
 
         string url = $"{apiEndpoint}?key={apiKey}";
-     
+     Debug.Log(url);
         Content userContent = new Content
         {
             role = "user",

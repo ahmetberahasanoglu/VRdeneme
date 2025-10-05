@@ -11,7 +11,7 @@ namespace GoogleSpeechToText.Scripts
     {
         // [SerializeField] private string audioUri = "gs://cloud-samples-tests/speech/brooklyn.flac"; // Audio file URI in Google Cloud Storage
         [Header("Google Cloud API Password")]
-        [SerializeField] private string apiKey; // Replace with your API key
+        [SerializeField] private string apiKey; 
         [Header("Gemini Manager Prefab")]
         public UnityAndGeminiV3 geminiManager;
                 
@@ -65,6 +65,7 @@ namespace GoogleSpeechToText.Scripts
         {
             StartRecording();
             recording = true;
+                Debug.Log("awdasd");
         } 
         
         if (Input.GetKeyUp(KeyCode.Space) && recording )

@@ -81,6 +81,10 @@ public class HUDController : MonoBehaviour
         int seconds = Mathf.FloorToInt(timeLeft % 60);
         timerText.text = $"{minutes:00}:{seconds:00}";
     }
+    public void onIsiticiInteracted()
+    {
+        audioSource.PlayOneShot(fireClip);
+    }
     void LateUpdate()
     {
         if (gameOverPanel.activeSelf)
@@ -89,10 +93,7 @@ public class HUDController : MonoBehaviour
             gameOverPanel.transform.Rotate(0, 180, 0);
         }
     }
-    public void onIsiticiInteracted()
-    {
-        audioSource.PlayOneShot(fireClip);
-    }
+   
     public void EndGame(int finalScore, float elapsedTime, int totalPenalties)
     {
         gameOverPanel.SetActive(true);

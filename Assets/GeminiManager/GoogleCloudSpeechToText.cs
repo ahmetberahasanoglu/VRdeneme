@@ -9,29 +9,21 @@ namespace GoogleSpeechToText.Scripts
 {
     public class GoogleCloudSpeechToText : MonoBehaviour
     {
-        // The API endpoint (including API key as a query parameter)
         private const string apiEndpoint = "https://speech.googleapis.com/v1/speech:recognize?&key=";
 
-        // Sends a request to Google Speech-to-Text API
-        // public static void SendSpeechToTextRequest(string audioUri, string apiKey, string accessToken, Action<string> onSuccess, Action<BadRequestData> onError)
         public static void SendSpeechToTextRequest(byte[] bytes, string apiKey, Action<string> onSuccess, Action<BadRequestData> onError)
         {
             string base64Content = Convert.ToBase64String(bytes);
-
-            
-
             var requestData = new SpeechToTextRequest
             {
                 config = new SpeechConfig
                 {
                     encoding = "LINEAR16",
-                    // sampleRateHertz = 16000,
                     languageCode = "tr-TR",
                     enableWordTimeOffsets = false
                 },
                 audio = new AudioData
                 {
-                    // uri = audioUri
                     content = base64Content,
                 }
             };
